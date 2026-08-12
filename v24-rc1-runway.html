@@ -1,0 +1,334 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>v24 RC1 Runway</title>
+<style>
+  :root {
+    --paper: #f7fafc;
+    --card: #ffffff;
+    --ink: #1b2733;
+    --muted: #5c6b7a;
+    --line: #dbe4ec;
+    --accent: #008de4;
+    --accent-ink: #006bb0;
+    --accent-soft: #e3f2fc;
+    --good: #2e8f5b;
+    --good-soft: #e2f3e9;
+    --warn: #b57e1c;
+    --warn-soft: #f9efd9;
+    --crit: #c24e3a;
+    --crit-soft: #f9e6e1;
+    --code-bg: #eef3f7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #101820;
+      --card: #17212b;
+      --ink: #dde6ee;
+      --muted: #93a3b2;
+      --line: #2a3844;
+      --accent: #3aa5ec;
+      --accent-ink: #6fbdf2;
+      --accent-soft: #12293a;
+      --good: #4cb87e;
+      --good-soft: #14301f;
+      --warn: #d9a545;
+      --warn-soft: #35280e;
+      --crit: #e0705c;
+      --crit-soft: #391812;
+      --code-bg: #1e2a35;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #101820;
+    --card: #17212b;
+    --ink: #dde6ee;
+    --muted: #93a3b2;
+    --line: #2a3844;
+    --accent: #3aa5ec;
+    --accent-ink: #6fbdf2;
+    --accent-soft: #12293a;
+    --good: #4cb87e;
+    --good-soft: #14301f;
+    --warn: #d9a545;
+    --warn-soft: #35280e;
+    --crit: #e0705c;
+    --crit-soft: #391812;
+    --code-bg: #1e2a35;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font: 16px/1.55 -apple-system, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    margin: 0;
+    padding: 2.5rem 1.25rem 5rem;
+  }
+  main { max-width: 920px; margin: 0 auto; display: flex; flex-direction: column; gap: 2.4rem; }
+  h1 { font-size: 1.9rem; line-height: 1.15; margin: 0; letter-spacing: -0.015em; text-wrap: balance; }
+  h2 { font-size: 1.22rem; margin: 0 0 .35rem; letter-spacing: -0.01em; }
+  h3 { font-size: 1rem; margin: 0; }
+  p { margin: .4rem 0; }
+  a { color: var(--accent-ink); text-decoration: none; }
+  a:hover, a:focus-visible { text-decoration: underline; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+  .eyebrow {
+    font-size: .72rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--accent-ink); margin-bottom: .5rem;
+  }
+  .stamp { color: var(--muted); font-size: .85rem; margin-top: .55rem; }
+  code, .pr {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .86em;
+    background: var(--code-bg);
+    padding: .1em .35em;
+    border-radius: 4px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  a .pr, a code { color: var(--accent-ink); }
+
+  /* date strip */
+  .dates { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .6rem; }
+  .date {
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+    padding: .65rem .8rem;
+  }
+  .date .d {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: .8rem; font-weight: 600; color: var(--accent-ink);
+  }
+  .date .what { font-size: .86rem; margin-top: .15rem; }
+  .date.hard { border-color: var(--accent); }
+
+  /* now queue */
+  .now {
+    background: var(--card); border: 1px solid var(--accent); border-radius: 10px;
+    padding: 1.1rem 1.3rem;
+  }
+  .now ol { margin: .6rem 0 0; padding-left: 1.4rem; display: flex; flex-direction: column; gap: .45rem; }
+  .now li::marker { font-weight: 700; color: var(--accent-ink); }
+
+  section.track { display: flex; flex-direction: column; gap: .7rem; }
+  .trackhead { display: flex; align-items: baseline; gap: .7rem; flex-wrap: wrap; }
+  .owner { font-size: .8rem; color: var(--muted); }
+
+  .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--card); }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  th {
+    text-align: left; font-size: .7rem; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--muted); font-weight: 600; padding: .55rem .8rem; border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  td { padding: .55rem .8rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  td.status { white-space: nowrap; }
+
+  .pill {
+    display: inline-block; font-size: .72rem; font-weight: 600; letter-spacing: .03em;
+    padding: .14em .6em; border-radius: 999px; white-space: nowrap;
+  }
+  .pill.merged { background: var(--good-soft); color: var(--good); }
+  .pill.near { background: var(--accent-soft); color: var(--accent-ink); }
+  .pill.iterate { background: var(--warn-soft); color: var(--warn); }
+  .pill.risk { background: var(--crit-soft); color: var(--crit); }
+  .pill.hold { background: var(--code-bg); color: var(--muted); }
+
+  /* runway */
+  .runway { display: flex; flex-direction: column; }
+  .day { display: grid; grid-template-columns: 118px 1fr; gap: 1rem; padding: .7rem 0; border-bottom: 1px solid var(--line); }
+  .day:last-child { border-bottom: none; }
+  .day .when {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: .82rem; font-weight: 600; color: var(--accent-ink); padding-top: .1rem;
+  }
+  .day .when small { display: block; font-weight: 400; color: var(--muted); }
+  .day ul { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: .2rem; font-size: .92rem; }
+  .day.cut { background: linear-gradient(to right, var(--accent-soft), transparent); border-radius: 6px; }
+  .day.cut .when { padding-left: .5rem; }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
+  @media (max-width: 720px) { .cols { grid-template-columns: 1fr; } }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.2rem; }
+  .panel ul { margin: .5rem 0 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: .45rem; font-size: .92rem; }
+  .panel.decisions { border-left: 3px solid var(--warn); }
+  .panel.risks { border-left: 3px solid var(--crit); }
+  .verdict { font-weight: 600; }
+  .checklist { list-style: none; padding-left: .2rem !important; }
+  .checklist li { padding-left: 1.35rem; position: relative; }
+  .checklist li::before {
+    content: ""; position: absolute; left: 0; top: .38em;
+    width: .7em; height: .7em; border: 1.5px solid var(--muted); border-radius: 3px;
+  }
+  .checklist li.done::before { background: var(--good); border-color: var(--good); }
+  .checklist li.done { color: var(--muted); }
+  .note { font-size: .85rem; color: var(--muted); }
+</style>
+
+<main>
+  <header>
+    <div class="eyebrow">Dash Core · release plan</div>
+    <h1>v24 RC1 Runway</h1>
+    <p class="stamp">State as of Tue Aug 11, 2026, late evening (post dev-sync; updated after the <span class="pr">#7526</span> merge). PR states pulled live from <code>dashpay/dash</code>, not from the meeting notes. RC1 hard target: <strong>Thu–Fri Aug 20–21</strong>, ideal tag Tue–Wed Aug 18–19 so testnet is updated before Poland travel on Aug 23.</p>
+  </header>
+
+  <section aria-label="Hard dates">
+    <div class="dates">
+      <div class="date"><div class="d">Wed Aug 12</div><div class="what">Konstantin's last full day — he flies Thu for 3 weeks (~50% availability)</div></div>
+      <div class="date"><div class="d">Tue–Wed Aug 18–19</div><div class="what">Ideal RC tag window (Phez): guix build + testnet update need runway</div></div>
+      <div class="date hard"><div class="d">Thu–Fri Aug 20–21</div><div class="what"><strong>RC1 published</strong> — the decision made in the meeting</div></div>
+      <div class="date"><div class="d">Sun Aug 23</div><div class="what">Team flies to Poland; Pasta on Yapper that week, infra also traveling</div></div>
+      <div class="date"><div class="d">~Sep 1–3</div><div class="what">v24.0 final if testnet soak is clean</div></div>
+      <div class="date"><div class="d">Sat Sep 5</div><div class="what">DashCon Amsterdam — demo DashPay, AssumeUTXO, MN shares, ext. addresses</div></div>
+    </div>
+  </section>
+
+  <section class="now" aria-label="Do this now">
+    <h2>Do this now — Wed Aug 12</h2>
+    <p class="note">Everything below is ordered by (reviewer window closing) × (unblocks the most downstream work). Konstantin's window closes tomorrow EOD; he is the AssumeUTXO reviewer.</p>
+    <ol>
+      <li><strong>Land <a href="https://github.com/dashpay/dash/pull/7553"><span class="pr">#7553</span></a> (AssumeUTXO M3).</strong> thepastaclaw's latest review flipped back to changes-requested and Konstantin left comments — resolve both rounds, fix the failing PR-title lint, merge. The whole M4–M6 chain stacks on it and the reviewer leaves Thursday.</li>
+      <li><strong>Merge <a href="https://github.com/dashpay/dash/pull/7511"><span class="pr">#7511</span></a> (DIP14).</strong> Promised "today" in the meeting, still open; CI is green; only kwvg comment threads remain. This unblocks the whole DashPay series.</li>
+      <li><strong>Push the <a href="https://github.com/dashpay/dash/pull/7437"><span class="pr">#7437</span></a> lint + asan-build fixes</strong> (MN shares). CI still red tonight; this is the longest-pole review of the three features, so get it re-reviewable before addressing anything cosmetic.</li>
+      <li><strong>Iterate <a href="https://github.com/dashpay/dash/pull/7579"><span class="pr">#7579</span></a> (M4)</strong> on thepastaclaw's two changes-requested rounds + lint, so Konstantin can review it tomorrow or on the flight.</li>
+      <li><strong>Iterate <a href="https://github.com/dashpay/dash/pull/7580"><span class="pr">#7580</span></a> (Rust/CXX bridge build)</strong> — it gates every remaining DashPay PR you haven't opened yet.</li>
+      <li><strong>Kick off the DIP14 seed-only-recovery investigation</strong> (agent task, parallel). kwvg wants this nailed down before the GUI wave merges; an answer by ~Fri keeps Wave 4 on schedule.</li>
+      <li><strong>Start the release-notes skeleton</strong> now, while the merged-PR list is small enough to reconstruct. v24 is a hard fork (asset lock v2, extended addresses, MN shares) — the notes are not a tag-day task.</li>
+    </ol>
+  </section>
+
+  <section class="track">
+    <div class="trackhead"><h2>Track A — AssumeUTXO</h2><span class="owner">owner: Pasta · reviewer: Konstantin (until Thu, then ~50%)</span></div>
+    <div class="tablewrap"><table>
+      <tr><th>PR</th><th>What</th><th>Status</th><th>Next step / target</th></tr>
+      <tr><td><span class="pr">#7451</span> M1</td><td>Snapshot persistence</td><td class="status"><span class="pill merged">merged</span></td><td>—</td></tr>
+      <tr><td><span class="pr">#7456</span> M2</td><td>EvoDB multi-chainstate isolation</td><td class="status"><span class="pill merged">merged</span></td><td>—</td></tr>
+      <tr><td><a href="https://github.com/dashpay/dash/pull/7553"><span class="pr">#7553</span></a> M3</td><td>Background validation completion, snapshot promotion</td><td class="status"><span class="pill iterate">final round</span></td><td><strong>Merge Wed Aug 12</strong> — resolve pastaclaw + knst comments, fix title lint</td></tr>
+      <tr><td><a href="https://github.com/dashpay/dash/pull/7579"><span class="pr">#7579</span></a> M4</td><td>Evo snapshot format v3, LLMQ reconstruction</td><td class="status"><span class="pill iterate">iterate</span></td><td>Address 2× changes-requested + lint; merge Thu Aug 13</td></tr>
+      <tr><td>M5 (unopened)</td><td>loadtxoutset; supersedes M3's missing-base startup error</td><td class="status"><span class="pill hold">re-stacked, verified</span></td><td>Open the moment M4 merges; merge by Fri–Sat Aug 14–15</td></tr>
+      <tr><td>M6 (unopened)</td><td>Hardening + dumptxoutset polish</td><td class="status"><span class="pill hold">re-stacked, verified</span></td><td>Open behind M5; merge by Mon–Tue Aug 17–18</td></tr>
+      <tr><td>M7 (unopened)</td><td>#30214 m_chainstates refactor + params polish</td><td class="status"><span class="pill risk">restack aborted</span></td><td><strong>Cut from RC1</strong> (see Decisions) — needs a merge-style port, and it silently dropped M2's default-identity switching</td></tr>
+    </table></div>
+    <p class="note">Minimum shippable for "experimental in v24": M3–M5 merged (loadtxoutset usable) + at least a testnet snapshot entry in chainparams. If M7 stays out, check whether the snapshot params live in M7 and extract them as a small standalone PR.</p>
+  </section>
+
+  <section class="track">
+    <div class="trackhead"><h2>Track B — DashPay</h2><span class="owner">owner: Pasta · reviewer: Kittywhiskers</span></div>
+    <div class="tablewrap"><table>
+      <tr><th>PR</th><th>What</th><th>Status</th><th>Next step / target</th></tr>
+      <tr><td><a href="https://github.com/dashpay/dash/pull/7511"><span class="pr">#7511</span></a></td><td>DIP-14 Derive256 + spec test vectors</td><td class="status"><span class="pill near">merge now</span></td><td>CI green; close out kwvg threads, merge Wed Aug 12</td></tr>
+      <tr><td><a href="https://github.com/dashpay/dash/pull/7580"><span class="pr">#7580</span></a></td><td>Optional Rust + CXX bridge build support (7109-derived)</td><td class="status"><span class="pill iterate">iterate</span></td><td>Heavy review traffic + pastaclaw changes-requested; merge Thu–Fri Aug 13–14</td></tr>
+      <tr><td>FFI crate + C++ swap (unopened)</td><td><span class="pr">rust/platform</span> bridge from fork PR 67 (crypto-core scope)</td><td class="status"><span class="pill hold">ready on fork</span></td><td>Open behind 7580; merge by Mon Aug 17</td></tr>
+      <tr><td>Wallet seams (unopened)</td><td>Platform key provider, per-wallet data records, DIP-15 keychain</td><td class="status"><span class="pill hold">on fork</span></td><td>Open Fri–Sat; merge by Tue Aug 18</td></tr>
+      <tr><td>GUI wave (unopened)</td><td>Username flow, dashboard, contacts, send-to-username</td><td class="status"><span class="pill risk">gated</span></td><td>Gated on seed-recovery answer (kwvg) — merge Tue Aug 18, function over polish per Phez</td></tr>
+      <tr><td>platform#4335</td><td>Transport-free embedder core (upstream, draft)</td><td class="status"><span class="pill hold">draft upstream</span></td><td>Not RC-gating — Dash side builds against the pinned git rev; keep Sam moving on it</td></tr>
+    </table></div>
+    <p class="note">Housekeeping: tracking issue <a href="https://github.com/dashpay/dash/issues/7512"><span class="pr">#7512</span></a> still describes the old hand-ported C++ client + mbedtls plan — update it to the Rust-crate architecture before reviewers use it as a map. Platform-side prereqs 4344/4345 are merged.</p>
+  </section>
+
+  <section class="track">
+    <div class="trackhead"><h2>Track C — Masternode shares</h2><span class="owner">owner: Pasta</span></div>
+    <div class="tablewrap"><table>
+      <tr><th>PR</th><th>What</th><th>Status</th><th>Next step / target</th></tr>
+      <tr><td><a href="https://github.com/dashpay/dash/pull/7437"><span class="pr">#7437</span></a></td><td>Decentralized MN shares DIP (feat!, ~4k lines / 34 files)</td><td class="status"><span class="pill iterate">iterate</span></td><td>Fix lint + asan-build CI, address 2× pastaclaw changes-requested; merge by Fri Aug 15</td></tr>
+      <tr><td>UI follow-up (unopened)</td><td>Recognize / create / manage shares in Qt</td><td class="status"><span class="pill hold">stretch</span></td><td>Open by Sat Aug 16, merge Tue Aug 18 — allowed to slip to RC2 (UI-only, capability ships in 7437)</td></tr>
+    </table></div>
+  </section>
+
+  <section class="track">
+    <div class="trackhead"><h2>Track D — Security / DoS fixes for the RC</h2><span class="owner">merge-ready first; none should gate the RC1 date except where noted</span></div>
+    <div class="tablewrap"><table>
+      <tr><th>PR</th><th>What</th><th>Status</th><th>Next step</th></tr>
+      <tr><td><a href="https://github.com/dashpay/dash/pull/7526"><span class="pr">#7526</span></a></td><td>Orphan-vote fetch via request tracker (network-level DoS)</td><td class="status"><span class="pill merged">merged</span></td><td>Merged Aug 11 — get a post-merge ack from Konstantin during soak week</td></tr>
+      <tr><td><a href="https://github.com/dashpay/dash/pull/7537"><span class="pr">#7537</span></a></td><td>CoinJoin server data races</td><td class="status"><span class="pill near">near</span></td><td>pastaclaw's last review is an approval, CI green; do the planned self/Fable pass, merge Thu</td></tr>
+      <tr><td><a href="https://github.com/dashpay/dash/pull/7519"><span class="pr">#7519</span></a></td><td>Bound QGETDATA tracking, reject requester-supplied nError</td><td class="status"><span class="pill iterate">iterate</span></td><td>3× changes-requested + asan/tsan/multiprocess CI red — needs a real iteration</td></tr>
+      <tr><td><a href="https://github.com/dashpay/dash/pull/7563"><span class="pr">#7563</span></a></td><td>Purge pending recovered sigs in BanNode</td><td class="status"><span class="pill iterate">iterate</span></td><td>Changes-requested + 3 CI failures; small PR, one focused pass</td></tr>
+      <tr><td><a href="https://github.com/dashpay/dash/pull/7568"><span class="pr">#7568</span></a></td><td>Charge collateral when a CoinJoin session aborts</td><td class="status"><span class="pill iterate">iterate</span></td><td>2× changes-requested + 2 CI failures</td></tr>
+      <tr><td><a href="https://github.com/dashpay/dash/pull/7570"><span class="pr">#7570</span></a></td><td>Miner: cumulative special-tx state per package (block-production bug)</td><td class="status"><span class="pill risk">CI red</span></td><td>6 failing checks incl. unit/functional tests — diagnose before more review; hard to exploit, may land in RC2 if it fights back</td></tr>
+      <tr><td><a href="https://github.com/dashpay/dash/pull/7557"><span class="pr">#7557</span></a></td><td>DKG deserialize-once + per-proTxHash message bound</td><td class="status"><span class="pill hold">split it</span></td><td>Per the meeting: extract the proTxHash-bound (the DoS-relevant part) as a small PR; the deser-once perf work is post-RC</td></tr>
+    </table></div>
+    <p class="note">Already banked since last week: <span class="pr">#7294</span> asset lock v2, <span class="pr">#7569</span> invalid-vote cache removal, <span class="pr">#7573</span> SHA-256 accel, <span class="pr">#7574</span> compact-filter fd reuse, <span class="pr">#7578</span> RPC address-info consistency, <span class="pr">#7522</span> MNAUTH connection bound, <span class="pr">#7565</span>, <span class="pr">#7518</span>, <span class="pr">#7487</span>, <span class="pr">#7529</span>.</p>
+  </section>
+
+  <section class="track">
+    <div class="trackhead"><h2>Track E — CI health &amp; hard-fork safety</h2></div>
+    <div class="tablewrap"><table>
+      <tr><th>Item</th><th>Status</th><th>Notes</th></tr>
+      <tr><td>V038 BLS-scheme chain split (must precede any DEPLOYMENT_V24 scheduling)</td><td class="status"><span class="pill merged">fixed</span></td><td>Verified on develop: <span class="pr">#7473</span> landed <code>SetStateVersion</code>, which re-encodes the operator key as a deterministic function of nVersion. Scheduling v24 on testnet is safe.</td></tr>
+      <tr><td>v23.1.8 crash fixes on develop</td><td class="status"><span class="pill merged">back-merged</span></td><td><span class="pr">#7534</span> merged master into develop; all three remote-crash fixes present.</td></tr>
+      <tr><td>ASAN job disabled (repo variable <code>SKIP_LINUX64</code>)</td><td class="status"><span class="pill risk">re-enable before RC</span></td><td>Merge <span class="pr">#7560</span> + <span class="pr">#7576</span>, then flip the variable — target Fri Aug 15. Several PRs above show asan-build failures; confirm whether they're inherited from the disabled-job era or real. Every day it stays off, this week's high merge volume goes unsanitized.</td></tr>
+      <tr><td>Konstantin's backports <span class="pr">#7550</span> / <span class="pr">#7502</span></td><td class="status"><span class="pill hold">not gating</span></td><td>Merge if review is cheap; do not spend RC-week reviewer time on them.</td></tr>
+    </table></div>
+  </section>
+
+  <section class="track">
+    <div class="trackhead"><h2>Runway — Aug 12 → RC1</h2></div>
+    <div class="runway">
+      <div class="day"><div class="when">Wed 12<small>knst's last day</small></div>
+        <ul><li>Merge <span class="pr">#7553</span>, <span class="pr">#7511</span> (<span class="pr">#7526</span> ✓ banked Tue night)</li>
+            <li>Push <span class="pr">#7437</span> CI fixes; iterate <span class="pr">#7579</span> + <span class="pr">#7580</span></li>
+            <li>Start seed-recovery investigation + release-notes skeleton</li></ul></div>
+      <div class="day"><div class="when">Thu 13<small>knst flies</small></div>
+        <ul><li>Merge <span class="pr">#7579</span> (M4), <span class="pr">#7537</span>; open M5</li>
+            <li>Merge <span class="pr">#7580</span> if green; open FFI-crate PR behind it</li>
+            <li>Iterate <span class="pr">#7437</span> review round</li></ul></div>
+      <div class="day"><div class="when">Fri 14–Sat 15</div>
+        <ul><li>Merge M5, <span class="pr">#7437</span>; open M6 + wallet-seams PR + MN-shares UI follow-up</li>
+            <li>Merge <span class="pr">#7560</span>/<span class="pr">#7576</span>, re-enable ASAN, confirm develop is green under it</li>
+            <li>Iterate <span class="pr">#7519</span>/<span class="pr">#7563</span>/<span class="pr">#7568</span>; seed-recovery answer due</li></ul></div>
+      <div class="day"><div class="when">Mon 17</div>
+        <ul><li>Merge M6 + FFI crate + wallet seams; open GUI wave</li>
+            <li>Land remaining Track-D fixes that are green; extract <span class="pr">#7557</span> subset</li></ul></div>
+      <div class="day cut"><div class="when">Tue 18<small>feature cutoff</small></div>
+        <ul><li>Merge GUI wave + MN-shares UI (or consciously slip them to RC2)</li>
+            <li><strong>Anything not merged by EOD is out of RC1</strong> — no exceptions except release mechanics</li>
+            <li>Version bump + release-notes PR; testnet DEPLOYMENT_V24 params in</li></ul></div>
+      <div class="day"><div class="when">Wed 19</div>
+        <ul><li>Branch/tag prep, guix builds start, coordinate testnet update with infra (they travel too)</li></ul></div>
+      <div class="day"><div class="when">Thu 20–Fri 21</div>
+        <ul><li><strong>Tag + publish v24.0.0-rc1</strong>; testnet updated; announce</li></ul></div>
+    </div>
+  </section>
+
+  <div class="cols">
+    <section class="panel decisions">
+      <h2>Decisions to make (don't drift into them)</h2>
+      <ul>
+        <li><strong>M7 in RC1?</strong> <span class="verdict">Recommend: out.</span> The restack was aborted for cause (needs a merge-style port; the mechanical rebase silently loses M2's default-identity switching). Extract snapshot params separately if they live there.</li>
+        <li><strong>MN-shares UI follow-up in RC1?</strong> <span class="verdict">Recommend: attempt, allow slip to RC2.</span> The capability ships in <span class="pr">#7437</span>; the demo needs the feature, not the management UI.</li>
+        <li><strong><span class="pr">#7557</span> whole or split?</strong> <span class="verdict">Recommend: split.</span> ProTxHash-bound now, deser-once perf post-RC — matches what was said in the meeting.</li>
+        <li><strong>Drogon + AWS-LC vs mbedTLS?</strong> <span class="verdict">Recommend: defer to post-v24.</span> Swapping the TLS stack days before an RC is how RCs die. Timebox an evaluation after the release; keep <span class="pr">#7220</span> as the reference.</li>
+        <li><strong>Seed-only recovery contract.</strong> Needs a written answer by ~Fri: what restores from mnemonic alone vs full backup. Mobile parity note: both mobile wallets use random DPNS preorder salts and skip preorder recovery — full deterministic recovery of platform blobs isn't the bar; recoverable identity + re-derivable keys is.</li>
+      </ul>
+    </section>
+    <section class="panel risks">
+      <h2>Behind / at risk</h2>
+      <ul>
+        <li><span class="pr">#7511</span> and <span class="pr">#7553</span> both slipped their meeting-day commitments — they are the two items where a second slipped day compounds (reviewer departure, stacked series).</li>
+        <li><strong>Review bandwidth is the constraint, not code.</strong> After Wed: Konstantin ~50% remote, kwvg part-time, and most merges this week will be AI-review + self-review. Keep a post-review-ack list (<span class="pr">#7522</span>, <span class="pr">#7294</span>, <span class="pr">#7569</span>, <span class="pr">#7574</span>, <span class="pr">#7537</span>…) and burn it down during the testnet soak week.</li>
+        <li><strong>Unopened scope is the biggest unknown:</strong> DashPay waves 3–4 and M5/M6 are "done on a branch" but have never met CI or a reviewer as PRs. History says each opening costs a lint/CI round.</li>
+        <li><strong>ASAN off during the highest-volume merge week</strong> — regressions merged now surface at RC test time instead of PR time.</li>
+        <li><strong>Testnet soak is compressed to ~1.5 weeks</strong> with infra traveling; any RC-blocking bug found after Aug 23 is being fixed from Poland.</li>
+        <li>Asset-lock v2 follow-ups still open: <span class="pr">#7577</span> (pre-fork RPC guard, knst requested changes — his offline-wallet signing concern is legitimate, gate at RPC not CreateTransactionInternal) and knst's validateaddress/getaddressinfo consistency item (<span class="pr">#7578</span> merged — verify it covered comment 3).</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="panel">
+    <h2>Release mechanics checklist</h2>
+    <ul class="checklist">
+      <li class="done">V038 chain-split fix on develop before scheduling DEPLOYMENT_V24 (<span class="pr">#7473</span>)</li>
+      <li class="done">v23.1.8 master→develop back-merge (<span class="pr">#7534</span>)</li>
+      <li>Release notes: hard-fork section (asset lock v2, extended addresses, MN shares), experimental-feature framing for AssumeUTXO, DashPay build flag documentation</li>
+      <li>Version bump PR + copyright/manpage regen per <code>doc/release-process.md</code></li>
+      <li>DEPLOYMENT_V24 testnet activation params (mainnet params at final, not RC)</li>
+      <li>Branch <code>v24.x</code> at freeze; tag <code>v24.0.0-rc1</code>; guix builds on ≥2 machines</li>
+      <li>Testnet rollout coordinated with infra before Aug 19</li>
+      <li>Re-enable ASAN job (flip <code>SKIP_LINUX64</code> after <span class="pr">#7560</span>/<span class="pr">#7576</span>)</li>
+      <li>Sweep the milestone: retarget anything open-but-not-RC1 to 24.1</li>
+      <li>DashCon demo build: dash-qt with <code>--enable-platform-gui</code> against testnet, verified on the laptop that travels</li>
+    </ul>
+  </section>
+</main>

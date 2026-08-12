@@ -171,7 +171,7 @@
   <header>
     <div class="eyebrow">Dash Core · release plan</div>
     <h1>v24 RC1 Runway</h1>
-    <p class="stamp">State as of Wed Aug 12, 2026, afternoon. <strong><span class="pr">#7553</span> (AssumeUTXO M3) merged</strong> — Konstantin's approval landed and it's in before his departure. PR states pulled live from <code>dashpay/dash</code>, not from the meeting notes. RC1 hard target: <strong>Thu–Fri Aug 20–21</strong>, ideal tag Tue–Wed Aug 18–19 so testnet is updated before Poland travel on Aug 23.</p>
+    <p class="stamp">State as of Wed Aug 12, 2026, afternoon. <strong><span class="pr">#7553</span>, <span class="pr">#7585</span>, and <span class="pr">#7583</span> all merged</strong> — AssumeUTXO M3 plus both its immediate follow-ups are in. PR states pulled live from <code>dashpay/dash</code>, not from the meeting notes. RC1 hard target: <strong>Thu–Fri Aug 20–21</strong>, ideal tag Tue–Wed Aug 18–19 so testnet is updated before Poland travel on Aug 23.</p>
   </header>
 
   <section aria-label="Hard dates">
@@ -189,15 +189,13 @@
     <h2 style="color: var(--good-ink, var(--good));">Ready to merge right now</h2>
     <p class="note">CI green, no open changes-requested, not conflicting — the review traffic that's left is comment-only (bots + non-blocking pastaclaw notes). These are yours to merge on inspection, not waiting on anyone else:</p>
     <ol>
-      <li><a href="https://github.com/dashpay/dash/pull/7585"><span class="pr">#7585</span></a> — AssumeUTXO M3 review follow-ups (3 commits, split out post-merge; 12/12 CI green, zero reviews yet so give it one look before merging)</li>
-      <li><a href="https://github.com/dashpay/dash/pull/7583"><span class="pr">#7583</span></a> — DKG pending-message retention keyed by proTxHash instead of NodeId (the DoS-relevant half of <span class="pr">#7557</span>, split out per the meeting decision)</li>
       <li><a href="https://github.com/dashpay/dash/pull/7537"><span class="pr">#7537</span></a> — CoinJoin server data/check-then-act races, incl. a knst comment addressed</li>
       <li><a href="https://github.com/dashpay/dash/pull/7568"><span class="pr">#7568</span></a> — charge collateral when a CoinJoin session aborts</li>
       <li><a href="https://github.com/dashpay/dash/pull/7570"><span class="pr">#7570</span></a> — miner: validate cumulative special-tx state per package (yesterday's 6 CI failures have cleared)</li>
       <li><a href="https://github.com/dashpay/dash/pull/7519"><span class="pr">#7519</span></a> — bound QGETDATA request tracking (yesterday's multiprocess-test failure has cleared)</li>
       <li><a href="https://github.com/dashpay/dash/pull/7563"><span class="pr">#7563</span></a> — purge pending recovered sigs in BanNode (yesterday's tsan-test failure has cleared)</li>
     </ol>
-    <p class="note">Not on this list and why: <span class="pr">#7526</span> has an active changes-requested plus 5 failing CI jobs (see Do Now); <span class="pr">#7581</span> has an unresolved blocking finding; <span class="pr">#7579</span> is conflicting and needs a rebase; <span class="pr">#7580</span>/<span class="pr">#7437</span> have heavy comment volume but zero approvals yet, worth a read before merging; <span class="pr">#7584</span> (new) has a red asan-build and no review pass yet; <span class="pr">#7560</span> has a stale changes-requested plus a red asan-test.</p>
+    <p class="note"><span class="pr">#7585</span> and <span class="pr">#7583</span> merged — off this list. Not on this list and why: <span class="pr">#7526</span> has an active changes-requested plus 5 failing CI jobs (see Do Now); <span class="pr">#7581</span> has an unresolved blocking finding; <span class="pr">#7579</span> is conflicting and needs a rebase; <span class="pr">#7580</span>/<span class="pr">#7437</span> have heavy comment volume but zero approvals yet, worth a read before merging; <span class="pr">#7584</span> (new) has a red asan-build and no review pass yet; <span class="pr">#7560</span> has a stale changes-requested plus a red asan-test.</p>
   </section>
 
   <section class="now" aria-label="Do this now">
@@ -223,7 +221,7 @@
       <tr><td><span class="pr">#7451</span> M1</td><td>Snapshot persistence</td><td class="status"><span class="pill merged">merged</span></td><td>—</td></tr>
       <tr><td><span class="pr">#7456</span> M2</td><td>EvoDB multi-chainstate isolation</td><td class="status"><span class="pill merged">merged</span></td><td>—</td></tr>
       <tr><td><a href="https://github.com/dashpay/dash/pull/7553"><span class="pr">#7553</span></a> M3</td><td>Background validation completion, snapshot promotion</td><td class="status"><span class="pill merged">merged</span></td><td>Merged today (Konstantin-approved) — banked before his departure</td></tr>
-      <tr><td><a href="https://github.com/dashpay/dash/pull/7585"><span class="pr">#7585</span></a> M3 follow-ups</td><td>Review-found cleanups split out of M3 (3 commits)</td><td class="status"><span class="pill near">ready to merge</span></td><td>12/12 CI green, no reviews yet — quick look and merge</td></tr>
+      <tr><td><a href="https://github.com/dashpay/dash/pull/7585"><span class="pr">#7585</span></a> M3 follow-ups</td><td>Review-found cleanups split out of M3 (3 commits)</td><td class="status"><span class="pill merged">merged</span></td><td>—</td></tr>
       <tr><td><a href="https://github.com/dashpay/dash/pull/7579"><span class="pr">#7579</span></a> M4</td><td>Evo snapshot format v3, LLMQ reconstruction</td><td class="status"><span class="pill risk">conflicting</span></td><td>Now conflicts with develop since M3 merged — rebase onto merged M3 today, also fix the lint failure</td></tr>
       <tr><td>M5 (unopened)</td><td>loadtxoutset; supersedes M3's missing-base startup error</td><td class="status"><span class="pill hold">re-stacked, verified</span></td><td>Open the moment M4 merges; merge by Fri–Sat Aug 14–15</td></tr>
       <tr><td>M6 (unopened)</td><td>Hardening + dumptxoutset polish</td><td class="status"><span class="pill hold">re-stacked, verified</span></td><td>Open behind M5; merge by Mon–Tue Aug 17–18</td></tr>
@@ -267,11 +265,11 @@
       <tr><td><a href="https://github.com/dashpay/dash/pull/7563"><span class="pr">#7563</span></a></td><td>Purge pending recovered sigs in BanNode</td><td class="status"><span class="pill near">ready to merge</span></td><td>Yesterday's tsan-test failure has cleared, CI green</td></tr>
       <tr><td><a href="https://github.com/dashpay/dash/pull/7568"><span class="pr">#7568</span></a></td><td>Charge collateral when a CoinJoin session aborts</td><td class="status"><span class="pill near">ready to merge</span></td><td>CI green, reviews comment-only</td></tr>
       <tr><td><a href="https://github.com/dashpay/dash/pull/7570"><span class="pr">#7570</span></a></td><td>Miner: cumulative special-tx state per package (block-production bug)</td><td class="status"><span class="pill near">ready to merge</span></td><td>The 6 failing checks from Aug 11 have cleared, CI green</td></tr>
-      <tr><td><a href="https://github.com/dashpay/dash/pull/7583"><span class="pr">#7583</span></a></td><td>Bound pending DKG message retention per proTxHash</td><td class="status"><span class="pill near">ready to merge</span></td><td>The proTxHash-bound half of <span class="pr">#7557</span>, split out as planned — CI green</td></tr>
+      <tr><td><a href="https://github.com/dashpay/dash/pull/7583"><span class="pr">#7583</span></a></td><td>Bound pending DKG message retention per proTxHash</td><td class="status"><span class="pill merged">merged</span></td><td>The proTxHash-bound half of <span class="pr">#7557</span>, split out as planned</td></tr>
       <tr><td><a href="https://github.com/dashpay/dash/pull/7584"><span class="pr">#7584</span></a></td><td>Net: replace ambiguous <code>IsBanned</code> with <code>PeerIsDisconnectedOrDiscouraged</code>; fixes LLMQ cleanup retaining queued state after peer finalization</td><td class="status"><span class="pill iterate">new, needs review</span></td><td><code>linux64_asan-build</code> red, no reviews yet — diagnose the asan failure before requesting review</td></tr>
       <tr><td><a href="https://github.com/dashpay/dash/pull/7557"><span class="pr">#7557</span></a></td><td>DKG deserialize-once (framing-only intake) — now draft</td><td class="status"><span class="pill hold">post-RC</span></td><td>DoS-relevant half extracted to <span class="pr">#7583</span> and merge-ready; this remaining perf redesign is post-RC per the meeting decision</td></tr>
     </table></div>
-    <p class="note">Already banked since last week: <span class="pr">#7294</span> asset lock v2, <span class="pr">#7569</span> invalid-vote cache removal, <span class="pr">#7573</span> SHA-256 accel, <span class="pr">#7574</span> compact-filter fd reuse, <span class="pr">#7578</span> RPC address-info consistency, <span class="pr">#7522</span> MNAUTH connection bound, <span class="pr">#7565</span>, <span class="pr">#7518</span>, <span class="pr">#7487</span>, <span class="pr">#7529</span>. Plus <span class="pr">#7511</span> DIP-14 and <span class="pr">#7576</span> (ASAN CI narrowing — see Track E).</p>
+    <p class="note">Already banked since last week: <span class="pr">#7294</span> asset lock v2, <span class="pr">#7569</span> invalid-vote cache removal, <span class="pr">#7573</span> SHA-256 accel, <span class="pr">#7574</span> compact-filter fd reuse, <span class="pr">#7578</span> RPC address-info consistency, <span class="pr">#7522</span> MNAUTH connection bound, <span class="pr">#7565</span>, <span class="pr">#7518</span>, <span class="pr">#7487</span>, <span class="pr">#7529</span>. Plus <span class="pr">#7511</span> DIP-14, <span class="pr">#7576</span> (ASAN CI narrowing — see Track E), and <span class="pr">#7583</span> (proTxHash-bound DKG retention, merged this afternoon).</p>
   </section>
 
   <section class="track">
@@ -289,7 +287,7 @@
     <div class="trackhead"><h2>Runway — Aug 12 → RC1</h2></div>
     <div class="runway">
       <div class="day"><div class="when">Wed 12<small>knst's last day</small></div>
-        <ul><li>Merge <span class="pr">#7553</span> ✓, <span class="pr">#7576</span> ✓ (ASAN back in CI); merge the ready-list: <span class="pr">#7585</span>, <span class="pr">#7583</span>, <span class="pr">#7537</span>, <span class="pr">#7568</span>, <span class="pr">#7570</span>, <span class="pr">#7519</span>, <span class="pr">#7563</span></li>
+        <ul><li>Merged: <span class="pr">#7553</span>, <span class="pr">#7576</span> (ASAN back in CI), <span class="pr">#7585</span>, <span class="pr">#7583</span>; still on the ready-list: <span class="pr">#7537</span>, <span class="pr">#7568</span>, <span class="pr">#7570</span>, <span class="pr">#7519</span>, <span class="pr">#7563</span></li>
             <li>Fix <span class="pr">#7581</span> erase-order bug; diagnose <span class="pr">#7526</span>'s 5 CI failures (real break, not a re-push); rebase <span class="pr">#7579</span> onto merged M3</li>
             <li>Read <span class="pr">#7580</span> and <span class="pr">#7437</span> fully before merging (0 approvals despite heavy comment traffic)</li>
             <li>Start seed-recovery investigation + release-notes skeleton</li></ul></div>

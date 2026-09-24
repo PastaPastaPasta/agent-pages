@@ -239,23 +239,23 @@
     code span.vs { color: #4070a0; } /* VerbatimString */
     code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    :root { --paper:#f7fafc; --ink:#1b2733; --muted:#5c6b7a; --accent:#006bb0; --line:#dbe4ec; --card:#fff; --code:#eef3f7; --warn:#fff6e0; --warnline:#e6b84d; }
-    @media (prefers-color-scheme: dark) { :root { --paper:#101820; --ink:#dde6ee; --muted:#93a3b2; --accent:#6fbdf2; --line:#2a3844; --card:#17212b; --code:#1d2a36; --warn:#2a2414; --warnline:#8a6d2a; } }
-    html { background:var(--paper); }
-    body { background:var(--paper); color:var(--ink); font:16px/1.6 -apple-system,"Segoe UI",Roboto,sans-serif; max-width:760px; margin:0 auto; padding:2.5rem 1.25rem 4rem; }
-    h1 { font-size:1.6rem; line-height:1.25; margin:0 0 1rem; }
-    h2 { font-size:1.15rem; margin:2.2rem 0 .6rem; padding-top:.2rem; border-top:1px solid var(--line); padding-top:1.2rem; }
-    a { color:var(--accent); }
-    code { font:.88em ui-monospace,SFMono-Regular,Menlo,monospace; background:var(--code); padding:.1em .35em; border-radius:4px; }
-    pre { background:var(--code); border:1px solid var(--line); border-radius:8px; padding:.9rem 1rem; overflow-x:auto; line-height:1.45; }
-    pre code { background:none; padding:0; font-size:.85em; }
-    blockquote { color:var(--ink); margin:1.2rem 0; padding:.8rem 1rem; background:var(--warn); border-left:4px solid var(--warnline); border-radius:6px; }
-    blockquote p { margin:0; }
-    li { margin:.3rem 0; }
-    .updated { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:1rem; }
-  </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      :root { --paper:#f7fafc; --ink:#1b2733; --muted:#5c6b7a; --accent:#006bb0; --line:#dbe4ec; --card:#fff; --code:#eef3f7; --warn:#fff6e0; --warnline:#e6b84d; }
+      @media (prefers-color-scheme: dark) { :root { --paper:#101820; --ink:#dde6ee; --muted:#93a3b2; --accent:#6fbdf2; --line:#2a3844; --card:#17212b; --code:#1d2a36; --warn:#2a2414; --warnline:#8a6d2a; } }
+      html { background:var(--paper); }
+      body { background:var(--paper); color:var(--ink); font:16px/1.6 -apple-system,"Segoe UI",Roboto,sans-serif; max-width:760px; margin:0 auto; padding:2.5rem 1.25rem 4rem; }
+      h1 { font-size:1.6rem; line-height:1.25; margin:0 0 1rem; }
+      h2 { font-size:1.15rem; margin:2.2rem 0 .6rem; padding-top:.2rem; border-top:1px solid var(--line); padding-top:1.2rem; }
+      a { color:var(--accent); }
+      code { font:.88em ui-monospace,SFMono-Regular,Menlo,monospace; background:var(--code); padding:.1em .35em; border-radius:4px; }
+      pre { background:var(--code); border:1px solid var(--line); border-radius:8px; padding:.9rem 1rem; overflow-x:auto; line-height:1.45; }
+      pre code { background:none; padding:0; font-size:.85em; }
+      blockquote { color:var(--ink); margin:1.2rem 0; padding:.8rem 1rem; background:var(--warn); border-left:4px solid var(--warnline); border-radius:6px; }
+      blockquote p { margin:0; }
+      li { margin:.3rem 0; }
+      .updated { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:1rem; }
+    </style>
 </head>
 <body>
 <header id="title-block-header">
@@ -325,19 +325,29 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="
 minutes. If Drive keeps restarting or reports Core RPC errors, check
 that step 2 was applied:
 <code>dashmate config get core.docker.commandArgs</code>.</p>
-<h2 id="going-back-to-v23">Going back to v23</h2>
+<h2 id="already-hit-the-crash">Already hit the crash?</h2>
+<p>If your node already stopped with
+<code>Assertion 'curDBTransaction.IsClean()' failed</code> and now
+refuses to start with
+<code>Found EvoDB inconsistency, you must reindex to continue</code>,
+the nightly prevents it from happening again but does not repair the
+existing damage. Upgrade first, then reindex once (this takes several
+hours):</p>
 <div class="sourceCode" id="cb5"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">dashmate</span> config set core.docker.image dashpay/dashd:23</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dashmate</span> config set core.docker.commandArgs <span class="st">&#39;[]&#39;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">dashmate</span> restart <span class="at">--safe</span></span></code></pre></div>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">dashmate</span> core reindex</span></code></pre></div>
+<h2 id="going-back-to-v23">Going back to v23</h2>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">dashmate</span> config set core.docker.image dashpay/dashd:23</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dashmate</span> config set core.docker.commandArgs <span class="st">&#39;[]&#39;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">dashmate</span> restart <span class="at">--safe</span></span></code></pre></div>
 <p>If you had Insight enabled, v24 migrated its indexes, so v23 may need
 a reindex: <code>dashmate core reindex</code>.</p>
 <h2 id="when-v24-is-released">When v24 is released</h2>
 <p>Switch to the official image and remove the override:</p>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">dashmate</span> config set core.docker.image dashpay/dashd:24</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dashmate</span> config set core.docker.commandArgs <span class="st">&#39;[]&#39;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">dashmate</span> restart <span class="at">--safe</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">dashmate</span> config set core.docker.image dashpay/dashd:24</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dashmate</span> config set core.docker.commandArgs <span class="st">&#39;[]&#39;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">dashmate</span> restart <span class="at">--safe</span></span></code></pre></div>
 <p>Keep the <code>commandArgs</code> override if the v24 release notes
 or your dashmate version still say it's needed.</p>
 <p class="updated">Last updated 2026-09-24 · <a href="dash-nightly-masternode-dashmate.md">Markdown version</a></p>

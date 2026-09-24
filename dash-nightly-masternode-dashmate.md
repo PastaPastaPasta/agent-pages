@@ -74,6 +74,17 @@ Evonodes: watch `dashmate status platform` for a few minutes. If Drive keeps
 restarting or reports Core RPC errors, check that step 2 was applied:
 `dashmate config get core.docker.commandArgs`.
 
+## Already hit the crash?
+
+If your node already stopped with `Assertion 'curDBTransaction.IsClean()' failed` and now
+refuses to start with `Found EvoDB inconsistency, you must reindex to continue`, the
+nightly prevents it from happening again but does not repair the existing damage.
+Upgrade first, then reindex once (this takes several hours):
+
+```bash
+dashmate core reindex
+```
+
 ## Going back to v23
 
 ```bash

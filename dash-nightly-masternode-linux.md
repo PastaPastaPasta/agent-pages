@@ -102,6 +102,17 @@ dash-cli mnsync status               # wait for "IsSynced": true
 dash-cli masternode status           # should show "Ready"
 ```
 
+## Already hit the crash?
+
+If your node already stopped with `Assertion 'curDBTransaction.IsClean()' failed` and now
+refuses to start with `Found EvoDB inconsistency, you must reindex to continue`, the
+nightly prevents it from happening again but does not repair the existing damage.
+Upgrade first, then reindex once (this takes several hours):
+
+```bash
+dashd -reindex
+```
+
 ## Going back to v23.1.8
 
 ```bash

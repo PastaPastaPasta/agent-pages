@@ -1,6 +1,6 @@
 20 Dash / Dash Platform feature-creep memes.
 
-01. Two story points — 01-two-story-points.jpg
+01. Just add usernames — 01-just-add-usernames.jpg
     Template: Gru's Plan (https://i.imgflip.com/26jxvz.jpg)
 02. The reasonable solution — 02-the-reasonable-solution.jpg
     Template: Drake Hotline Bling (https://i.imgflip.com/30b1gx.jpg)

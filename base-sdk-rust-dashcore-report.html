@@ -339,7 +339,7 @@ const T = [
     commits: 6, crates: 'pkc', sha: 'f27bc4f5', date: '10-26' },
   { id: 'BS11b', a: 'bls', t: 'Complete the dash-pkc BLS API', up: 'none', upn: 'Fork only.',
     what: 'Fills in the remaining BLS operations Core\'s wrapper offers (aggregates, threshold split and recover, multi-recipient IES), replays dashbls\'s own test vectors, and caps IES lengths.',
-    why: 'Quorum and DKG code in the node needs the full set of operations, all matching Core.',
+    why: 'Quorum code in the node needs the full set of operations, all matching Core.',
     keys: ['<code>bls::core</code> completed with the wrapper\'s remaining ops', 'dashbls <code>test.cpp</code> fixed vectors replayed', 'IES lengths capped at <code>MAX_SIZE</code>, as Core\'s reader does', 'Mutation testing: surviving mutants killed'],
     commits: 6, crates: 'pkc', sha: '518b7896', date: '10-26' },
 

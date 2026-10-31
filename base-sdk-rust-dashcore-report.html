@@ -1,312 +1,483 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Base-sdk work by the rust-dashcore agent · 2026-10-31</title>
 <style>
   :root {
-    --background: #f7fafc; --foreground: #1b2733; --muted: #5c6b7a; --muted-foreground: #5c6b7a;
-    --card: #ffffff; --popover: #ffffff; --popover-foreground: #1b2733; --border: #dbe4ec;
-    --success: #18794a; --info: #006bb0; --warning: #9a5700; --warning-surface: #fff6e8;
-    --destructive: #c0362c; --chart-1: #0e7c86; --accent: #006bb0;
+    --bg: #f7fafc; --fg: #1b2733; --muted: #5c6b7a; --card: #ffffff; --card2: #f1f5f9; --line: #dbe4ec;
+    --accent: #006bb0; --ok: #18794a; --open: #006bb0; --warn: #9a5700; --warn-bg: #fff6e8; --bad: #c0362c;
+    --none: #6b7a89; --fork: #0e7c86;
+    --a-dec: #0e7c86; --a-par: #8a5a00; --a-tx: #1f6fb2; --a-p2p: #2f7d32; --a-ovl: #b5476b; --a-bls: #5a5fc7; --a-sync: #6b7a89;
     --radius: 8px;
-    --font-sans: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-    --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
     color-scheme: light;
   }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --background: #101820; --foreground: #dde6ee; --muted: #93a3b2; --muted-foreground: #93a3b2;
-      --card: #17212b; --popover: #1d2935; --popover-foreground: #dde6ee; --border: #2a3844;
-      --success: #3fbf7f; --info: #6fbdf2; --warning: #e7a645; --warning-surface: #2a2216;
-      --destructive: #f2776c; --chart-1: #3cc4c9; --accent: #6fbdf2; color-scheme: dark;
-    }
-  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --bg: #101820; --fg: #dde6ee; --muted: #93a3b2; --card: #17212b; --card2: #1c2833; --line: #2a3844;
+    --accent: #6fbdf2; --ok: #3fbf7f; --open: #6fbdf2; --warn: #e7a645; --warn-bg: #2a2216; --bad: #f2776c;
+    --none: #8796a5; --fork: #3cc4c9;
+    --a-dec: #3cc4c9; --a-par: #e0b050; --a-tx: #6fb2ee; --a-p2p: #6cc070; --a-ovl: #ee86a8; --a-bls: #a3a6f5; --a-sync: #93a3b2;
+    color-scheme: dark; } }
   :root[data-theme="dark"] {
-    --background: #101820; --foreground: #dde6ee; --muted: #93a3b2; --muted-foreground: #93a3b2;
-    --card: #17212b; --popover: #1d2935; --popover-foreground: #dde6ee; --border: #2a3844;
-    --success: #3fbf7f; --info: #6fbdf2; --warning: #e7a645; --warning-surface: #2a2216;
-    --destructive: #f2776c; --chart-1: #3cc4c9; --accent: #6fbdf2; color-scheme: dark;
-  }
-  html { background: var(--background); }
-  body { background: var(--background); max-width: 860px; margin: 0 auto !important; padding: 2.5rem 1.25rem 4rem; font-size: 14px !important; }
-  .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 13px; }
-  .topbar a { color: var(--accent); text-decoration: none; font-weight: 600; }
-  .topbar a:hover { text-decoration: underline; }
-  #themebtn { font: inherit; font-size: 12px; color: var(--foreground); background: var(--card); border: 1px solid var(--border); border-radius: 999px; padding: 3px 12px; cursor: pointer; }
-  h1 { font-size: 24px; letter-spacing: -0.01em; margin: 0 0 4px; }
-  footer { margin-top: 36px; font-size: 12px; color: var(--muted-foreground); border-top: 1px solid var(--border); padding-top: 12px; }
-</style>
-<style>
-  :root { --gap: 12px; }
+    --bg: #101820; --fg: #dde6ee; --muted: #93a3b2; --card: #17212b; --card2: #1c2833; --line: #2a3844;
+    --accent: #6fbdf2; --ok: #3fbf7f; --open: #6fbdf2; --warn: #e7a645; --warn-bg: #2a2216; --bad: #f2776c;
+    --none: #8796a5; --fork: #3cc4c9;
+    --a-dec: #3cc4c9; --a-par: #e0b050; --a-tx: #6fb2ee; --a-p2p: #6cc070; --a-ovl: #ee86a8; --a-bls: #a3a6f5; --a-sync: #93a3b2;
+    color-scheme: dark; }
+
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: var(--font-sans); color: var(--foreground); font-size: 13px; line-height: 1.45; }
-  h2 { font-size: 15px; font-weight: 600; margin: 28px 0 4px; }
-  h2:first-child { margin-top: 0; } h1 + .sub { margin-bottom: 18px; }
-  .sub { color: var(--muted-foreground, var(--muted)); font-size: 12px; margin: 0 0 12px; }
-  .mono { font-family: var(--font-mono); font-size: 11.5px; }
-  .muted { color: var(--muted-foreground, var(--muted)); }
+  html { background: var(--bg); }
+  body { margin: 0 auto; max-width: 920px; padding: 2.5rem 1.25rem 4rem; background: var(--bg); color: var(--fg); font: 14px/1.55 var(--sans); }
+  a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+  h1 { font-size: 26px; letter-spacing: -0.01em; margin: 0 0 6px; }
+  h2 { font-size: 18px; margin: 40px 0 6px; letter-spacing: -0.005em; }
+  h3 { font-size: 15px; margin: 26px 0 8px; display: flex; align-items: center; gap: 8px; }
+  p { margin: 0 0 10px; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 14px; }
+  .mono, code { font-family: var(--mono); font-size: 12px; }
+  code { background: var(--card2); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; }
+  .muted { color: var(--muted); }
+  .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 13px; }
+  .topbar a { font-weight: 600; }
+  #themebtn { font: inherit; font-size: 12px; color: var(--fg); background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 3px 12px; cursor: pointer; }
 
-  .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--gap); }
-  .kpi { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
-  .kpi .n { font-size: 26px; font-weight: 650; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
-  .kpi .l { font-size: 12px; color: var(--muted-foreground, var(--muted)); }
-  .kpi .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
+  .box { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
+  .lede { font-size: 15px; }
+  .lede p { margin-bottom: 8px; }
+  .toc { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; margin-top: 10px; }
 
-  .pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--border); white-space: nowrap; }
+  .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 16px; }
+  .kpi { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; }
+  .kpi .n { font-size: 26px; font-weight: 650; font-variant-numeric: tabular-nums; }
+  .kpi .l { font-size: 12px; color: var(--muted); }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
+
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; counter-reset: s; }
+  .step { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; position: relative; }
+  .step::before { counter-increment: s; content: counter(s); position: absolute; top: 10px; right: 12px; font-weight: 700; color: var(--muted); font-size: 12px; }
+  .step b { display: block; margin-bottom: 4px; }
+  .step span { font-size: 12.5px; color: var(--muted); }
+
+  .pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--line); white-space: nowrap; background: var(--card); }
   .pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-  .s-merged  { color: var(--success); }
-  .s-open    { color: var(--info); }
-  .s-closed  { color: var(--muted-foreground, var(--muted)); }
-  .s-fork    { color: var(--chart-1); }
-  .s-local   { color: var(--warning); }
-  .s-stalled { color: var(--destructive); }
-  .s-run     { color: var(--info); }
-  .s-def     { color: var(--muted-foreground, var(--muted)); }
+  .u-partly { color: var(--ok); } .u-open { color: var(--open); } .u-none { color: var(--none); }
+  .u-held { color: var(--warn); } .u-stall { color: var(--bad); } .u-fork { color: var(--fork); }
 
-  .box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
-  .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; margin-bottom: 8px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 14px; }
+  .chip { font: inherit; font-size: 12px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--fg); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .chip[aria-pressed="true"] { border-color: var(--fg); font-weight: 600; }
+  .chip i { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
+
+  .area-h { border-left: 4px solid var(--c); padding-left: 10px; }
+  .area-blurb { color: var(--muted); font-size: 13px; margin: -2px 0 10px; padding-left: 14px; }
+  .task { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--c); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; }
+  .task .hd { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; }
+  .task .id { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--c); }
+  .task .ti { font-weight: 650; font-size: 15px; }
+  .task .pills { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .task .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; margin-top: 8px; }
+  .task .lab { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; margin-bottom: 1px; }
+  .task .meta { margin-top: 10px; font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 14px; }
+  .task details { margin-top: 8px; }
+  .task summary { cursor: pointer; font-size: 12.5px; color: var(--accent); font-weight: 600; }
+  .task ul { margin: 6px 0 0; padding-left: 18px; font-size: 13px; }
+  .task li { margin: 2px 0; }
+
+  .chart { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; margin-bottom: 8px; }
   .legend span { display: inline-flex; align-items: center; gap: 6px; }
   .legend i { width: 14px; height: 8px; border-radius: 2px; display: inline-block; }
-
-  svg text { fill: var(--foreground); font-family: var(--font-sans); }
-  .tick { fill: var(--muted-foreground, var(--muted)); font-size: 10.5px; }
-  .grid { stroke: var(--border); stroke-width: 1; }
-  .bar { cursor: default; }
-  .bar:hover rect.m { filter: brightness(1.15); }
-
-  #tip { position: fixed; pointer-events: none; background: var(--popover); color: var(--popover-foreground, var(--foreground)); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 10px; font-size: 12px; max-width: 300px; box-shadow: 0 4px 16px rgb(0 0 0 / .25); opacity: 0; transition: opacity .08s; z-index: 9; }
-  #tip b { display: block; margin-bottom: 2px; }
-
-  .div { display: grid; grid-template-columns: 110px 1fr 52px; gap: 6px 10px; align-items: center; }
-  .track { height: 16px; position: relative; }
-  .track .f { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 0 4px 4px 0; }
+  svg text { fill: var(--fg); font-family: var(--sans); }
+  .tick { fill: var(--muted); font-size: 10.5px; }
+  .gridl { stroke: var(--line); }
+  .hit:hover .m { filter: brightness(1.12); }
 
   table { width: 100%; border-collapse: collapse; }
-  th { text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted-foreground, var(--muted)); padding: 6px 8px; border-bottom: 1px solid var(--border); }
-  td { padding: 7px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: 6px 8px; border-bottom: 1px solid var(--line); }
+  td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
   tr:last-child td { border-bottom: 0; }
-  td.id { font-family: var(--font-mono); font-size: 12px; white-space: nowrap; font-weight: 600; }
+  td.id { font-family: var(--mono); font-size: 12px; font-weight: 700; white-space: nowrap; }
 
-  .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .card { border: 1px solid var(--border); border-left: 3px solid var(--chart-1); border-radius: var(--radius); padding: 8px 10px; background: var(--card); }
-  .card .t { font-weight: 600; }
-  .card .t .mono { font-weight: 500; margin-left: 6px; }
-  .card .d { font-size: 12px; color: var(--muted-foreground, var(--muted)); margin-top: 2px; }
+  dl.gloss { display: grid; grid-template-columns: 170px 1fr; gap: 6px 16px; margin: 0; }
+  dl.gloss dt { font-weight: 650; }
+  dl.gloss dd { margin: 0; color: var(--muted); }
+  .callout { border: 1px solid var(--line); background: var(--warn-bg); border-radius: var(--radius); padding: 10px 14px; margin-bottom: 8px; }
+  .callout b { color: var(--warn); }
 
-  .callout { border-radius: var(--radius); padding: 12px 14px; border: 1px solid var(--border); background: var(--warning-surface, var(--card)); }
-  .callout + .callout { margin-top: 8px; }
-  .callout b { color: var(--warning); }
-  .flow { display: grid; grid-template-columns: 1fr 34px 1fr 34px 1fr; align-items: stretch; gap: 0; }
-  .flow .node { border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; background: var(--card); }
-  .flow .node .h { font-weight: 600; }
-  .flow .arr { display: flex; align-items: center; justify-content: center; color: var(--muted-foreground, var(--muted)); font-size: 18px; }
-  @media (max-width: 560px) {
+  #tip { position: fixed; pointer-events: none; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 10px; font-size: 12px; max-width: 320px; box-shadow: 0 6px 20px rgb(0 0 0 / .18); opacity: 0; transition: opacity .08s; z-index: 9; }
+  #tip b { display: block; margin-bottom: 2px; }
+  footer { margin-top: 40px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; }
+
+  @media (max-width: 680px) {
     .kpis { grid-template-columns: repeat(2, 1fr); }
-    .cards { grid-template-columns: 1fr; }
-    .flow { grid-template-columns: 1fr; }
-    .flow .arr { transform: rotate(90deg); height: 26px; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .task .grid2 { grid-template-columns: 1fr; }
+    .task .pills { margin-left: 0; }
+    dl.gloss { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 <div id="tip"></div>
-
 <div class="topbar"><a href="./">← Pasta's Pages</a><button id="themebtn" type="button">Theme: auto</button></div>
+
 <h1>Base-sdk work by the rust-dashcore agent</h1>
-<p class="sub">Snapshot 2026-10-31 ~16:55Z · from the local base-sdk fork, GitHub, and the program's status, decision and backlog logs</p>
+<p class="sub">Status snapshot 2026-10-31 ~17:30Z · built from the fork's git history, GitHub, and the program's status, decision and backlog logs</p>
 
-<div class="kpis">
-  <div class="kpi"><div class="n">7</div><div class="l"><span class="dot" style="background:var(--success)"></span>merged upstream</div></div>
-  <div class="kpi"><div class="n">3</div><div class="l"><span class="dot" style="background:var(--info)"></span>open upstream PRs</div></div>
-  <div class="kpi"><div class="n">4</div><div class="l"><span class="dot" style="background:var(--muted-foreground,var(--muted))"></span>closed, folded into #67</div></div>
-  <div class="kpi"><div class="n">17</div><div class="l"><span class="dot" style="background:var(--chart-1)"></span>tasks merged into fork</div></div>
-  <div class="kpi"><div class="n">3</div><div class="l"><span class="dot" style="background:var(--warning)"></span>done locally, not in fork</div></div>
+<div class="box lede">
+  <p><b>What's going on.</b> The rust-dashcore agent manages a program to build a Rust Dash full node that agrees with Dash Core bit for bit on consensus. That node gets its low-level building blocks from <a href="https://github.com/dashpay/base-sdk">dashpay/base-sdk</a>, kwvg's Rust library of Dash types, transactions, P2P messages, chain parameters and BLS cryptography.</p>
+  <p>The node needs base-sdk to read every byte the way Dash Core does, including Core's odd edge cases. Waiting for each change to merge upstream would stall the node, so the agent keeps a <b>local fork</b> of base-sdk, lands work there first, and pins the node to it. It then rebuilds small pieces in kwvg's conventions and proposes them <b>upstream</b> as PRs.</p>
+  <p>This page lists every piece of fork work, what it is for, and how far it has got toward upstream.</p>
+  <div class="toc"><a href="#numbers">Numbers</a><a href="#flow">How work flows</a><a href="#map">Where the work is</a><a href="#tasks">Every fork task</a><a href="#pending">Not in the fork yet</a><a href="#next">Planned / deferred</a><a href="#upstream">Upstream PRs</a><a href="#gloss">Glossary</a></div>
 </div>
 
-<h2>How work flows</h2>
-<p class="sub">Task branches merge into the local fork, rust-dashcore pins to it, and selected units are rebuilt in kwvg's conventions as upstream PRs</p>
-<div class="flow">
-  <div class="node"><div class="h">Task branches</div><div class="muted mono">node/bsdk-&lt;slug&gt;</div><div style="margin-top:4px">Reviewed (Opus / Sol), <span class="mono">just comb</span> per commit</div></div>
-  <div class="arr">→</div>
-  <div class="node" style="border-color:var(--chart-1)"><div class="h">Local fork</div><div class="muted mono">node/base-sdk @ b6853466</div><div style="margin-top:4px">Pinned by rust-dashcore via <span class="mono">file://</span>. Mirror pushed as <span class="mono">node-sdk-integration</span></div></div>
-  <div class="arr">→</div>
-  <div class="node" style="border-color:var(--success)"><div class="h">dashpay/base-sdk</div><div class="muted mono">develop @ 5a11e0ab</div><div style="margin-top:4px">PRs from PastaPastaPasta, rebuilt per unit (DEC-91)</div></div>
+<div class="kpis" id="numbers">
+  <div class="kpi"><div class="n">18</div><div class="l"><span class="dot" style="background:var(--fork)"></span>tasks merged into the fork, plus 2 upstream syncs</div></div>
+  <div class="kpi"><div class="n">226</div><div class="l"><span class="dot" style="background:var(--fork)"></span>fork commits not on upstream</div></div>
+  <div class="kpi"><div class="n">7</div><div class="l"><span class="dot" style="background:var(--ok)"></span>upstream PRs merged</div></div>
+  <div class="kpi"><div class="n">3</div><div class="l"><span class="dot" style="background:var(--open)"></span>upstream PRs open</div></div>
+  <div class="kpi"><div class="n">3</div><div class="l"><span class="dot" style="background:var(--warn)"></span>done but held back</div></div>
 </div>
 
-<h2>Fork divergence from upstream develop</h2>
-<p class="sub">Merge base 89828032 (#84). Most of the BLS, overlay and decode-domain work exists only on the fork</p>
-<div class="box">
-  <div class="div" id="divg"></div>
+<h2 id="flow">How work flows</h2>
+<p class="sub">Every task follows the same path. Most of the work below has reached step 3; only a slice has reached step 4.</p>
+<div class="steps">
+  <div class="step"><b>Task branch</b><span>Built on a branch <code>node/bsdk-&lt;task&gt;</code>, following base-sdk's own rules (commit format, <code>just test lint</code>).</span></div>
+  <div class="step"><b>Review</b><span>Independent model reviews (Opus, GPT Sol) until approved. Every commit must pass the repo's checks on its own (<code>just comb</code>).</span></div>
+  <div class="step" style="border-color:var(--fork)"><b>Local fork</b><span>Merged into <code>node/base-sdk</code> (now <code>b6853466</code>). The Rust node pins this exact commit.</span></div>
+  <div class="step" style="border-color:var(--ok)"><b>Upstream PR</b><span>Selected pieces rebuilt on <code>develop</code> in kwvg's style and filed to dashpay/base-sdk. Your call what goes up.</span></div>
 </div>
 
-<h2>Upstream PR timeline</h2>
-<p class="sub">Each bar runs from open to merge or close; open PRs run to today. Hover a bar for detail</p>
-<div class="box">
+<h2 id="map">Where the work is</h2>
+<p class="sub">Commits per fork task, grouped by area and coloured by how far each has got upstream. Commit count is a rough size measure: some small tasks carry large test corpora. Axis is commits. Hover a bar for a one-line summary.</p>
+<div class="chart">
   <div class="legend">
-    <span><i style="background:var(--success)"></i>Merged</span>
-    <span><i style="background:var(--info)"></i>Open (waiting on kwvg)</span>
-    <span><i style="background:var(--muted-foreground,var(--muted));opacity:.55"></i>Closed, superseded</span>
+    <span><i style="background:var(--ok)"></i>Partly upstream (merged PRs)</span>
+    <span><i style="background:var(--open)"></i>In an open upstream PR</span>
+    <span><i style="background:var(--none)"></i>Fork only, not proposed</span>
   </div>
-  <svg id="gantt" width="100%" role="img" aria-label="Timeline of base-sdk upstream PRs"></svg>
+  <svg id="mapchart" width="100%" role="img" aria-label="Commits per fork task by area and upstream status"></svg>
 </div>
 
-<h2>Open upstream PRs</h2>
-<div class="box" style="padding:4px 8px">
-<table>
-  <tr><th>PR</th><th>Topic</th><th>Head</th><th>State</th></tr>
-  <tr><td class="id">#86</td><td><b>p2p-handshake</b> · handshake and header-sync messages as Core does<br><span class="muted">CHANGES_REQUESTED; one bot thread is a standing false positive (~52 h)</span></td><td class="mono">f1e47106<br><span class="muted">8 commits</span></td><td><span class="pill s-open">Waiting kwvg</span></td></tr>
-  <tr><td class="id">#87</td><td><b>netinfo</b> · refuse bad purposes, read bad entries as invalid<br><span class="muted">r7 pushed 07:25Z; thepastaclaw APPROVED 08:23Z; encode gap deferred to #40 "Known Issues"</span></td><td class="mono">a77f57fc<br><span class="muted">12 commits</span></td><td><span class="pill s-open">Waiting kwvg</span></td></tr>
-  <tr><td class="id">#88</td><td><b>v24-payloads</b> · decode v24 special txs as Core does<br><span class="muted">r4 pushed 07:36Z. <b style="color:var(--warning)">Legacy-scheme-key thread (r4431014458) is held for you</b>, unanswered by design</span></td><td class="mono">b46ced48<br><span class="muted">18 commits</span></td><td><span class="pill s-open">Waiting kwvg</span> <span class="pill s-local">Your call</span></td></tr>
-</table>
-<p class="muted" style="margin:6px 8px 8px;font-size:12px">All three merge-tree clean against develop 5a11e0ab; no rebase needed unless kwvg asks.</p>
-</div>
+<h2 id="tasks">Every fork task</h2>
+<p class="sub">Grouped by what part of the SDK they touch. Use the filters to narrow the list; open "Key changes" for the commit-level detail.</p>
+<div class="filters" id="filters"></div>
+<div id="tasklist"></div>
 
-<h2>Merged into the local fork only</h2>
-<p class="sub">Done, reviewed, <span class="mono">--no-ff</span> merged into <span class="mono">node/base-sdk</span>, and pinned by rust-dashcore. Not upstream unless noted</p>
-<div class="cards" id="forkcards"></div>
+<h2 id="pending">Done, but not merged into the fork yet</h2>
+<p class="sub">Finished work that is deliberately waiting, plus one item that has stalled.</p>
+<div id="pendinglist"></div>
 
-<h2>Done locally, not merged into the fork</h2>
-<div class="box" style="padding:4px 8px">
+<h2 id="next">Planned or deferred base-sdk work</h2>
+<div class="box" style="padding:6px 10px">
 <table>
-  <tr><th>Task</th><th>What</th><th>Branch</th><th>State</th></tr>
-  <tr><td class="id">BL-413</td><td>LLMQ corpus tests compare recorded DKG signatures instead of self-signing</td><td class="mono">node/bsdk-bl413<br>5370c7df · 1 commit</td><td><span class="pill s-local">Held for pkc batch</span></td></tr>
-  <tr><td class="id">BL-443</td><td>Perf: fold secure-aggregate keys as they are read back (27% alloc regression in <span class="mono">qc-block-mainnet</span>)</td><td class="mono">node/bsdk-bl443<br>6f2bbc5f · 1 commit</td><td><span class="pill s-local">Held for pkc batch</span></td></tr>
-  <tr><td class="id">BS13</td><td>Perf helpers: <span class="mono">encoded_len</span>, streaming SHA256d, <span class="mono">decode_with_ranges</span>. Blocking findings were fixed by BS6b on 10-18, but BS13 was never follow-merged; row unchanged since 10-17</td><td class="mono">node/bsdk-bs13-perf-helpers<br>69d1d4b5 · 14 commits</td><td><span class="pill s-stalled">Stalled</span></td></tr>
+  <tr><th>Task</th><th>What it would do</th><th>Why it's waiting</th></tr>
+  <tr><td class="id">BS10</td><td>Give all 74 P2P commands a typed decoder with an explicit policy, and pass unknown commands through untouched. The node needs this to serve overlay data (masternode lists, quorum info, compact filters) to other peers.</td><td><span class="pill u-none">Deferred</span><br><span class="muted">Held until the open upstream PRs land, so it builds on their final shape (DEC-508).</span></td></tr>
+  <tr><td class="id">BS11c</td><td>BLS signing exactly as Core's <code>CBLSSecretKey::Sign</code> does, under both the legacy and basic schemes. Needed before a Rust masternode can take part in quorum key generation (DKG).</td><td><span class="pill u-none">Planned (milestone M5)</span></td></tr>
+  <tr><td class="id">BL-415</td><td>Extend the BLS corpus checker so it reproduces the <code>sign_message</code> values that landed upstream, and update provenance notes.</td><td><span class="pill u-held">Waits for pkc batch</span></td></tr>
+  <tr><td class="id">pkc batch</td><td>One themed upstream PR bundling BL-413, BL-415 and the BL-443 fix.</td><td><span class="pill u-held">Not opened yet</span></td></tr>
+  <tr><td class="id">Big upstream question</td><td>Whether to propose the overlay messages (BS8, BS9a, BS9b), the BLS engine (BS11a-*, BS11b, BS12), the rest of BS6b's signature hashes and the BS5-R chain setup upstream at all.</td><td><span class="pill u-held">Your decision (DEC-09)</span></td></tr>
 </table>
 </div>
 
-<h2>In progress now</h2>
-<div class="box" style="padding:4px 8px">
-<table>
-  <tr><th>Stream</th><th>What</th><th>State</th></tr>
-  <tr><td class="id">SW-UPSTREAM</td><td>Re-pin rust-dashcore to the BS5-R fork; follow-merge of integration T68 got Opus APPROVE. Remaining 81 develop commits (#85–#96) ride the next weekly sync</td><td><span class="pill s-run">Fork CI 41220554621</span></td></tr>
-  <tr><td class="id">SW-V24</td><td>rc.4 → rc.5 pin-move train. Base-sdk part (S5, b6853466) done. Deadline 11-09</td><td><span class="pill s-run">Train in flight</span></td></tr>
-</table>
+<h2 id="upstream">Upstream PRs to dashpay/base-sdk</h2>
+<p class="sub">Every PR the agent has filed. Each bar runs from open to merge or close; open PRs run to today. Hover a bar for detail.</p>
+<div class="chart">
+  <div class="legend">
+    <span><i style="background:var(--ok)"></i>Merged</span>
+    <span><i style="background:var(--open)"></i>Open, waiting on kwvg</span>
+    <span><i style="background:var(--none);opacity:.55"></i>Closed, folded into #67</span>
+  </div>
+  <svg id="gantt" width="100%" role="img" aria-label="Timeline of upstream PRs"></svg>
 </div>
 
-<h2>Not started or deferred</h2>
-<div class="box" style="padding:4px 8px">
+<h3>Open PRs in detail</h3>
+<div class="box" style="padding:6px 10px">
 <table>
-  <tr><th>Task</th><th>What</th><th>Status</th></tr>
-  <tr><td class="id">BS10</td><td>Type all 74 P2P commands with <span class="mono">decode_with_policy</span></td><td><span class="pill s-def">Deferred behind open PRs (DEC-508)</span></td></tr>
-  <tr><td class="id">BS11c</td><td>Core-style BLS <span class="mono">sign</span> for both schemes</td><td><span class="pill s-def">Planned M5</span></td></tr>
-  <tr><td class="id">BL-415</td><td>Corpus checker reproduces upstream <span class="mono">sign_message</span> values</td><td><span class="pill s-def">Waits for pkc batch</span></td></tr>
-  <tr><td class="id">pkc batch</td><td>BL-413 + BL-415 + BL-443 as one upstream PR batch</td><td><span class="pill s-def">Not opened</span></td></tr>
-  <tr><td class="id">BLS/overlay</td><td>BS8–BS9b, BS11a-*, BS11b, BS12 upstreaming</td><td><span class="pill s-local">Not proposed · your call (DEC-09)</span></td></tr>
+  <tr><th>PR</th><th>What it proposes</th><th>Where it stands</th></tr>
+  <tr><td class="id"><a href="https://github.com/dashpay/base-sdk/pull/86">#86</a></td><td><b>p2p-handshake.</b> Read the optional <code>version</code> fields and a short <code>pong</code> as Core does, send V2 short IDs only to peers that know them, and compress and read <code>headers2</code> as Core does. From BS4a and BS7. <span class="muted">8 commits, head f1e47106.</span></td><td><span class="pill u-open">Waiting on kwvg</span><br><span class="muted">One bot review thread has been a known false positive for ~52 h.</span></td></tr>
+  <tr><td class="id"><a href="https://github.com/dashpay/base-sdk/pull/87">#87</a></td><td><b>netinfo.</b> Masternode network addresses read as Core reads them: unknown or out-of-order purposes refused, unknown entry types and failed services read as "invalid" entries, port 443 allowed for Platform HTTPS. From BS6a and R6. <span class="muted">12 commits, head a77f57fc.</span></td><td><span class="pill u-open">Waiting on kwvg</span><br><span class="muted">Fix round 7 pushed; thepastaclaw approved. A pre-existing gap went to the #40 known-issues list.</span></td></tr>
+  <tr><td class="id"><a href="https://github.com/dashpay/base-sdk/pull/88">#88</a></td><td><b>v24-payloads.</b> The v24 special transactions as Core reads them: v3 ProRegTx/ProUpRegTx with payout and share lists, ProDisTx, the share payloads, CbTx v4 with its asset-unlock root, v2 asset locks and unlocks (with the stable txid), and signed output values. From BS6a, BS6b and BS4a. <span class="muted">18 commits, head b46ced48.</span></td><td><span class="pill u-open">Waiting on kwvg</span> <span class="pill u-held">Your call</span><br><span class="muted">One thread about legacy-scheme keys is held for you and deliberately unanswered.</span></td></tr>
 </table>
+<p class="muted" style="margin:8px;font-size:12.5px">All three apply cleanly to today's develop (5a11e0ab), so they need no rebase unless kwvg asks.</p>
+</div>
+
+<h2 id="gloss">Glossary</h2>
+<div class="box">
+<dl class="gloss">
+  <dt>Core / the reference</dt><dd>Dash Core (dashd), the C++ node. The node program treats it as the definition of correct behaviour.</dd>
+  <dt>Decode domain</dt><dd>The exact set of byte strings a parser accepts, and how it reads them. "As Core does" means same accept/reject verdicts, same values, same bytes consumed.</dd>
+  <dt>Fork / <code>node/base-sdk</code></dt><dd>The agent's local base-sdk branch. Nothing node-specific or embargoed goes in it, but it isn't public except a mirror and a preview branch.</dd>
+  <dt>Upstream</dt><dd>dashpay/base-sdk's <code>develop</code> branch, maintained by kwvg.</dd>
+  <dt>Special transactions</dt><dd>Dash transaction types beyond plain payments: masternode registration and updates (ProTx), coinbase payload (CbTx), quorum commitments, asset locks and unlocks for Platform.</dd>
+  <dt>v24</dt><dd>The next Dash Core major release. It changes several special-transaction formats; mainnet signalling starts around 11-09.</dd>
+  <dt>Overlay messages</dt><dd>Dash-only P2P messages on top of Bitcoin's: ChainLocks, InstantSend, quorum/DKG traffic, masternode lists, CoinJoin, governance.</dd>
+  <dt>LLMQ / DKG</dt><dd>Long-living masternode quorums, and the distributed key generation they run to create a shared BLS key.</dd>
+  <dt>BLS legacy vs basic</dt><dd>Dash used a pre-standard BLS encoding ("legacy", via the relic C library) before v19, then the IETF "basic" scheme. Both still appear on chain.</dd>
+  <dt>Exotic points</dt><dd>Legacy-encoded BLS values that are not proper group elements but that Core still accepts and computes with. Matching Core here needs a port of relic's arithmetic.</dd>
+  <dt>Corpus / vectors</dt><dd>Test cases recorded by running Dash Core itself, so tests check against Core's real answers, not ours.</dd>
+  <dt>pkc batch</dt><dd>The next planned upstream PR for the <code>dash-pkc</code> crypto crate.</dd>
+</dl>
 </div>
 
 <h2>Caveats</h2>
-<div class="callout"><b>Stale ledger.</b> The program's fork ledger stops at BS9b and still lists #67 as open. The fork lists above are rebuilt from git; trust them over that file.</div>
-<div class="callout"><b>Review state.</b> GitHub still shows CHANGES_REQUESTED on all three open PRs from earlier rounds. Only the latest few reviews on each were read.</div>
-<div class="callout"><b>#72</b> (rust-bitcoin rev alignment) came from your account but isn't in the manager's linked-PR list; it may belong to another thread.</div>
+<div class="callout"><b>Stale ledger.</b> The program's own fork ledger stops at BS9b and still lists #67 as open. This page is rebuilt from git, so trust it over that file.</div>
+<div class="callout"><b>Review state.</b> GitHub still shows "changes requested" on all three open PRs from earlier review rounds.</div>
+<div class="callout"><b>#72</b> (rust-bitcoin revision alignment) came from the same account but isn't in the agent's linked-PR list; it may belong to another thread.</div>
+
+<footer>Snapshot 2026-10-31 ~17:30Z. Published from a Claude Code session. Figures come from git and GitHub at that time and will drift.</footer>
 
 <script>
-const tip = document.getElementById('tip');
-function showTip(e, html) { tip.innerHTML = html; tip.style.opacity = 1; moveTip(e); }
-function moveTip(e) {
-  const w = tip.offsetWidth, h = tip.offsetHeight;
-  let x = e.clientX + 14, y = e.clientY + 14;
-  if (x + w > innerWidth - 8) x = e.clientX - w - 14;
-  if (y + h > innerHeight - 8) y = e.clientY - h - 14;
-  tip.style.left = x + 'px'; tip.style.top = y + 'px';
-}
-function hideTip() { tip.style.opacity = 0; }
+const AREAS = {
+  dec:  { name: 'Decoding foundations', c: '--a-dec',  blurb: 'Shared rules for how raw bytes are read, used by every other crate (dash-types, plus pieces of primitives and p2p_core).' },
+  par:  { name: 'Chain parameters',     c: '--a-par',  blurb: 'dash-params: the per-network constants and options (mainnet, testnet, devnet, regtest) consensus depends on.' },
+  tx:   { name: 'Transactions & v24',   c: '--a-tx',   blurb: 'dash-primitives: transactions, special-transaction payloads and the v24 formats.' },
+  p2p:  { name: 'P2P wire protocol',    c: '--a-p2p',  blurb: 'dash-p2p-core: message framing and the standard Bitcoin-derived messages.' },
+  ovl:  { name: 'Masternode overlay messages', c: '--a-ovl', blurb: 'dash-p2p-core: the Dash-only message families for ChainLocks, InstantSend, quorums, CoinJoin and governance.' },
+  bls:  { name: 'BLS cryptography',     c: '--a-bls',  blurb: 'dash-pkc: BLS signatures as Core computes them, under both the legacy and basic schemes, including Core\'s quirks.' },
+  sync: { name: 'Keeping the fork current', c: '--a-sync', blurb: 'Merging upstream develop into the fork so it does not drift, plus the fixes those merges needed.' },
+};
+const UP = {
+  partly: { cls: 'u-partly', c: '--ok',   label: 'Partly upstream' },
+  open:   { cls: 'u-open',   c: '--open', label: 'In open PR' },
+  none:   { cls: 'u-none',   c: '--none', label: 'Fork only' },
+  na:     { cls: 'u-none',   c: '--none', label: 'n/a (sync)' },
+};
+const T = [
+  { id: 'BS4a', a: 'dec', t: 'Read bytes exactly as Dash Core does', up: 'partly', upn: 'Pieces landed in #57, #58, #67 and #73; the version/pong reads are in open #86 and signed amounts in open #88.',
+    what: 'Reworks base-sdk\'s parsers so that whatever Core accepts, the SDK accepts, and whatever Core rejects, it rejects the same way. Covers lengths, booleans, amounts, protocol versions and message-size limits.',
+    why: 'A node that disagrees with Core about whether a block, transaction or message is valid can split from the network or get banned by its peers.',
+    keys: ['<code>CoreBool</code>: any non-zero byte reads as true, as in Core (base-sdk previously accepted only 0/1)', 'Length prefixes range-checked against Core\'s 32 MiB <code>MAX_SER_SIZE</code>', 'Transaction output values read as a signed amount, as Core does', 'Special payloads report how many bytes they consumed and any trailing data', 'All 14 LLMQ quorum types named, including 103 and 105', 'Protocol version made signed; <code>ProtoCtx</code> lets P2P messages decode according to the negotiated version', 'Core\'s 3 MiB per-message limit and its separate V2 (BIP324) transport limits', '<code>version</code>/<code>pong</code> edge cases read the way Core\'s handlers read them'],
+    commits: 38, crates: 'types, primitives, p2p_core, params', sha: '481f8c3', date: '10-08' },
 
-// Divergence bars (one axis: commits)
-const dv = [
-  { l: 'Ahead (fork only)', n: 226, c: 'var(--chart-1)' },
-  { l: 'Behind develop', n: 81, c: 'var(--muted-foreground, var(--muted))' },
+  { id: 'BS5', a: 'par', t: 'Complete chain parameters', up: 'partly', upn: 'The RPC validation, spork address and LLMQ allowlist went upstream as #84 (merged 10-26).',
+    what: 'Builds every network\'s parameters exactly as Core\'s <code>CChainParams</code>: mainnet, testnet, devnet and regtest, with all of Core\'s override options (spork keys, budget parameters, LLMQ settings).',
+    why: 'Consensus rules depend on per-network constants such as activation heights, quorum sizes and spork keys. One wrong value means a wrong chain.',
+    keys: ['Parameters built per network kind and per Core release', 'Checked against parameter dumps taken from Dash Core itself', 'Spork options added; only final negative heights refused, as Core does', 'Spork and budget data checked against provenance-checked Core output'],
+    commits: 4, crates: 'params (≈13k lines, mostly tables)', sha: '23f6fd7', date: '10-09' },
+  { id: 'BS5-R', a: 'par', t: 'Rebuild chain setup on kwvg\'s new params', up: 'none', upn: 'Fork only.',
+    what: 'kwvg rewrote dash-params upstream (#83) and #84 merged. This redoes the fork\'s parameter work on top of that new design instead of keeping a diverging copy.',
+    why: 'It keeps the fork close to upstream and adds what the node needs to start on any network, devnets included.',
+    keys: ['New <code>Release</code> and <code>ChainSetup</code> types, plus the devnet table', 'Builds devnet genesis blocks', 'Applies Core\'s chain-parameter command-line options (refuses a negated <code>-powtargetspacing</code>, as Core does)', 'Resolves spork signer addresses', 'Checked against Core\'s dumps; each corpus pinned to a hand-kept manifest'],
+    commits: 11, crates: 'params, primitives, p2p_core, script', sha: '1976a145', date: '10-30' },
+  { id: 'SW-V24 S5', a: 'par', t: 'Move to Dash Core v24.0.0-rc.5', up: 'none', upn: 'Fork only (the libz-sys bump is upstream #95, cherry-picked).',
+    what: 'Updates the v24 parameter tables from release candidate 4 to rc.5 and adds <code>min_blocks_to_keep</code>.',
+    why: 'The node tracks Core\'s latest v24 release candidate ahead of mainnet signalling (deadline 11-09).',
+    keys: ['v24.0 tables moved to rc.5', 'New <code>ChainParams::min_blocks_to_keep</code>', '<code>libz-sys</code> security bump (RUSTSEC-2026-0418), cherry-picked from upstream #95'],
+    commits: 5, crates: 'params', sha: 'b6853466', date: '10-31' },
+
+  { id: 'BS6a', a: 'tx', t: 'Dash Core v24 transaction formats', up: 'open', upn: 'Proposed as #88 (v24 payloads) and #87 (NetInfo); both open.',
+    what: 'Decodes the special transactions v24 introduces or changes: ProTx v3 with payout and share lists, CbTx v4, AssetLock/AssetUnlock v2 and types 10–12. Each BLS field is read under whichever BLS scheme Core would use at that point.',
+    why: 'Once v24 activates, every block can contain these formats. A node that can\'t parse them stops syncing.',
+    keys: ['v24 payloads decoded, with BLS fields typed by where their scheme comes from', 'Masternode network addresses (NetInfo) read as Core reads them, including empty and invalid entries', 'v24 asset locks accepted by <code>AssetLock::check()</code>', 'CbTx and AssetUnlock signatures decoded scheme-free, as Core does', 'New <code>DecodeError::MalleableBls</code>; BLS fields encoded under Core\'s write-time scheme', 'Unknown ProTx versions and NetInfo size failures judged by Core'],
+    commits: 19, crates: 'primitives, pkc, types', sha: 'a1d4dd3', date: '10-09' },
+  { id: 'BS6b', a: 'tx', t: 'Signature hashes for special transactions', up: 'open', upn: 'The v2 asset-unlock stable txid and the v3 ProRegTx sign string are in open #88; the rest of the sighash work is fork only.',
+    what: 'Defines the exact bytes each masternode-transaction signature covers, and the new stable txid v24 gives version-2 asset unlocks.',
+    why: 'To check that a ProTx registration or update is really signed by the right key, the node must hash exactly what Core hashes.',
+    keys: ['v2 asset unlocks get Core\'s v24 stable txid', 'Adds the messages that special-payload signatures cover', 'Verified against signatures Core actually produced', 'Unsupported versions refused when computing provider sign hashes'],
+    commits: 6, crates: 'primitives', sha: 'dfee0b8', date: '10-18' },
+  { id: 'R6 netinfo', a: 'tx', t: 'NetInfo rules updated to v24 rc.4', up: 'open', upn: 'Folded into open #87.',
+    what: 'Brings masternode network-address validation in line with Core v24.0.0-rc.4.',
+    why: 'Core changed these rules between release candidates. Without the update the node would accept or reject masternode registrations differently.',
+    keys: ['Port 443 allowed for services in the Platform HTTPS group', 'Unknown or out-of-order address purposes refused', 'Purpose order checked; services checked by their group', 'Tests pinned to rc.4'],
+    commits: 4, crates: 'primitives', sha: '1cacb811', date: '10-26' },
+
+  { id: 'BS7', a: 'p2p', t: 'dash-p2p-core: the wire protocol', up: 'partly', upn: 'Rebuilt as #67 and #74 (merged); the handshake and header-sync part is open #86.',
+    what: 'Implements Dash\'s P2P framing and standard messages with Core\'s transport checks: blocks, transactions, compressed headers (headers2), Bloom filters (BIP37), compact blocks (BIP152) and block filters (BIP157).',
+    why: 'The node has to talk to real Dash peers, and parse their messages as Core does, before it can sync anything.',
+    keys: ['Core\'s protocol versions and size limits', 'V1 message framing with Core\'s transport checks', 'V2 (BIP324) short message IDs, gated on the peer\'s version', 'Every inventory type Core knows', '<code>headers2</code> decoded and encoded as Core does', 'Block, tx, BIP37, BIP152 and BIP157 messages typed, both directions', 'Hostile message counts can\'t force large allocations', 'Checked against Core\'s verdicts and bytes read'],
+    commits: 39, crates: 'p2p_core', sha: '4b4e76b', date: '10-09' },
+
+  { id: 'BS8', a: 'ovl', t: 'Overlay messages I: ChainLocks, InstantSend, quorums', up: 'none', upn: 'Fork only.',
+    what: 'Types the core masternode-network messages: ChainLock signatures, InstantSend locks, recovered signatures, quorum final commitments, MNAUTH, sporks, platform bans, quorum data requests, masternode list diffs and QRInfo. Object hashes are computed as Core computes them.',
+    why: 'ChainLocks, InstantSend and the masternode list are how a Dash node knows what is final and who the masternodes are.',
+    keys: ['All of the above typed with Core\'s read rules', 'Masternode-list entries and platform bans hashed exactly as Core does', 'Non-canonical booleans reported (<code>NonCanonicalBool</code>)', 'Size and flag refusals for <code>qgetdata</code> typed', 'Checked against Core\'s verdicts, including cases where Core rewrites the bytes'],
+    commits: 12, crates: 'p2p_core, types', sha: 'dbe245f', date: '10-10' },
+  { id: 'BS9a', a: 'ovl', t: 'Overlay messages II: quorum key generation', up: 'none', upn: 'Fork only.',
+    what: 'Types the DKG messages quorums use to create a shared key (contributions, complaints, justifications, premature commitments) and the signature-share family.',
+    why: 'Needed for a Rust masternode to take part in LLMQ quorums.',
+    keys: ['DKG and signature-share messages typed', 'DKG payloads over 1 MiB refused before reading', 'DKG BLS fields read as Core does; raw payloads hashed for inventory', 'Every write-back checked against Core'],
+    commits: 9, crates: 'p2p_core (large recorded corpus)', sha: 'a33623f', date: '10-16' },
+  { id: 'BS9b', a: 'ovl', t: 'Overlay messages III: CoinJoin and governance', up: 'none', upn: 'Fork only.',
+    what: 'Types the CoinJoin mixing messages and governance objects, votes and sync.',
+    why: 'Needed for the node to relay and validate CoinJoin and governance traffic.',
+    keys: ['CoinJoin messages typed; governance votes read as Core reads them', '<code>dss</code> counts checked before reading', '<code>dsa</code> written for the negotiated protocol version', 'Compared with Core\'s reads'],
+    commits: 7, crates: 'p2p_core, primitives', sha: '8382b76', date: '10-16' },
+
+  { id: 'BS11a-t', a: 'bls', t: 'BLS decode types', up: 'none', upn: 'Fork only.',
+    what: 'Adds Rust equivalents of Core\'s eager and lazy BLS wrappers. Which scheme (legacy or basic) applies is chosen at run time through <code>BlsCtx</code>.',
+    why: 'Core decodes BLS fields lazily and switches scheme by context. The node has to keep identical bytes and identical verdicts.',
+    keys: ['Runtime scheme selection with <code>BlsCtx</code>', 'Eager and lazy wrappers matching Core\'s', 'Wrapper test vectors generated from Dash Core', 'Decodes as Core\'s basic <code>SetBytes</code>, with no round trip'],
+    commits: 12, crates: 'pkc', sha: '098dafd', date: '10-08' },
+  { id: 'BS11a-1', a: 'bls', t: 'Classify legacy BLS points', up: 'none', upn: 'Fork only.',
+    what: 'Sorts legacy BLS points lazily into Usable, OnCurve or Exotic, and keeps invalid elements the way Core\'s wrappers do.',
+    why: 'This is the first step to handling the odd legacy points that Core still accepts.',
+    keys: ['Lazy three-way classification', 'Invalid elements kept, not rejected'],
+    commits: 1, crates: 'pkc', sha: '28db98c', date: '10-15' },
+  { id: 'BS12', a: 'bls', t: 'BLS test corpus and single-threaded verify', up: 'none', upn: 'Fork only.',
+    what: 'Adds a BLS test corpus recorded by running Core (aggregation, secure aggregation, threshold signing, IES encryption), and verification that runs on one thread.',
+    why: 'Tests compare against Core\'s real outputs. The node\'s pure consensus crates may not spawn threads, and blst\'s default verify uses a thread pool.',
+    keys: ['Verify BLS signatures as Core does, on one thread', 'Corpus recorded through Core', 'Secure verify that keeps an invalid object\'s element, as Core does'],
+    commits: 4, crates: 'pkc', sha: '0324e1c', date: '10-16' },
+  { id: 'BS11a-2', a: 'bls', t: 'Record relic\'s odd-point arithmetic', up: 'none', upn: 'Fork only.',
+    what: 'Records what relic, the C library behind Core\'s legacy BLS, computes on off-subgroup points.',
+    why: 'This gives the reference answers the arithmetic port (BS11a-3/4) must reproduce.',
+    keys: ['Off-subgroup arithmetic vectors recorded from the Core oracle'],
+    commits: 1, crates: 'pkc', sha: '956fde38', date: '10-16' },
+  { id: 'BS11a-3', a: 'bls', t: 'Port relic\'s arithmetic engine', up: 'none', upn: 'Fork only.',
+    what: 'Adds a Rust port of relic\'s element arithmetic, so that operations on Exotic points give Core\'s exact results. It also fixes BLS-IES, the encryption used in DKG.',
+    why: 'Without it, the node would compute different results than Core on legacy edge cases that are valid on chain.',
+    keys: ['Core\'s BLS element arithmetic computed by a relic-equivalent engine', 'BLS-IES keyed from the basic encoding under both schemes', 'Constant-time handling: secret scalar zeroized; no variable-time serialization of the DH product'],
+    commits: 12, crates: 'pkc', sha: '569f4adf', date: '10-22' },
+  { id: 'BS11a-4', a: 'bls', t: 'Port relic\'s pairing', up: 'none', upn: 'Fork only.',
+    what: 'Ports relic\'s optimal-ate Miller loop (the core of signature verification) and pairs Exotic points as Core does.',
+    why: 'This completes legacy-scheme verification parity with Core.',
+    keys: ['Optimal-ate Miller loop ported', 'Reference pairing recorded on every point class', 'A kept legacy key\'s subgroup test run only once', 'Corpus reproduced by Core, with provenance enforced'],
+    commits: 6, crates: 'pkc', sha: 'f27bc4f5', date: '10-26' },
+  { id: 'BS11b', a: 'bls', t: 'Complete the dash-pkc BLS API', up: 'none', upn: 'Fork only.',
+    what: 'Fills in the remaining BLS operations Core\'s wrapper offers (aggregates, threshold split and recover, multi-recipient IES), replays dashbls\'s own test vectors, and caps IES lengths.',
+    why: 'Quorum and DKG code in the node needs the full set of operations, all matching Core.',
+    keys: ['<code>bls::core</code> completed with the wrapper\'s remaining ops', 'dashbls <code>test.cpp</code> fixed vectors replayed', 'IES lengths capped at <code>MAX_SIZE</code>, as Core\'s reader does', 'Mutation testing: surviving mutants killed'],
+    commits: 6, crates: 'pkc', sha: '518b7896', date: '10-26' },
+
+  { id: 'SW-UPSTREAM 10-28', a: 'sync', t: 'Merge upstream develop (addedfa1)', up: 'na', upn: 'Sync, not a feature.',
+    what: 'Merged about 212 upstream commits into the fork, then fixed what the merge broke.',
+    why: 'This keeps the fork from drifting away from kwvg\'s develop.',
+    keys: ['Provider-signature decoding matched to the reference again', 'pow macro renamed (clashed with a nightly built-in)', 'Lint and doc fixes from the merge'],
+    commits: 8, crates: 'primitives, pow, pkc, p2p_core', sha: 'e96259ce', date: '10-28' },
+  { id: 'SW-UPSTREAM 10-30', a: 'sync', t: 'Merge upstream develop (89828032)', up: 'na', upn: 'Sync, not a feature.',
+    what: 'Merged #83 (kwvg\'s params rewrite) and #84, which BS5-R then built on. The fork is still 81 commits behind develop (#85–#96: Bazel, CI, refactors, pow speedups), queued for the next weekly sync.',
+    why: 'Same as above.',
+    keys: ['36 upstream commits merged'],
+    commits: 0, crates: '—', sha: '56c4cd90', date: '10-30' },
 ];
-const dmax = 226;
-document.getElementById('divg').innerHTML = dv.map(d =>
-  `<div>${d.l}</div><div class="track"><div class="f" style="width:${d.n / dmax * 100}%;background:${d.c}"></div></div><div class="mono" style="text-align:right">${d.n}</div>`
-).join('') + `<div></div><div class="muted" style="font-size:12px">commits vs <span class="mono">origin/develop</span>; behind = #85–#96 (Bazel, CI, refactors, pow perf)</div><div></div>`;
-
-// Gantt
+const PENDING = [
+  { id: 'BL-413', a: 'bls', t: 'LLMQ test corpus compares recorded values', st: ['u-held', 'Held for pkc batch'],
+    what: 'Three LLMQ corpus tests signed and verified their own values instead of comparing what Core recorded, and read two fields differently from the reference. Now fixed.',
+    why: 'It only touches tests and provenance text, so it rides the next pkc upstream batch rather than forcing a fork bump on its own (DEC-521).', meta: 'node/bsdk-bl413 · 5370c7df · 1 commit · 10-27' },
+  { id: 'BL-443', a: 'bls', t: 'Fix a BLS allocation regression', st: ['u-held', 'Held for pkc batch'],
+    what: 'Since the BS11a-4/BS11b pin, decoding a mainnet quorum-commitment block made 27% more allocations and used 40% more memory (though 11% fewer instructions). The fix folds secure-aggregate keys as they are read.',
+    why: 'Joins the same pkc batch (DEC-538).', meta: 'node/bsdk-bl443 · 6f2bbc5f · 1 commit · 10-27' },
+  { id: 'BS13', a: 'dec', t: 'Performance helpers', st: ['u-stall', 'Stalled'],
+    what: 'Adds <code>encoded_len</code> (size without encoding), SHA256d hashing while encoding instead of after, and <code>decode_with_ranges</code> for transactions and blocks, with fuzz tests and benchmarks.',
+    why: 'Review on 10-17 required changes, but both findings predated BS13 and BS6b fixed them on 10-18. BS13 was never follow-merged after that, and its status hasn\'t moved since. It is off the critical path.', meta: 'node/bsdk-bs13-perf-helpers · 69d1d4b5 · 14 commits · last 10-17' },
+];
 const PR = [
-  ['#57','codec_size','Range-check decoded lengths, Core decode-time caps','10-09','10-13','merged'],
-  ['#58','llmq_types','Name LLMQ types 103/105; params reuses LlmqType','10-09','10-14','merged'],
-  ['#59','p2p_frame','ProtocolVersion signed, bound commands (→ #67)','10-09','10-15','closed'],
-  ['#63','tx_check','Serialized tx size in Transaction::check (→ #67)','10-14','10-15','closed'],
+  ['#57','codec_size','Range-check decoded lengths with Core\'s caps (BS4a)','10-09','10-13','merged'],
+  ['#58','llmq_types','Name LLMQ types 103/105 (BS4a)','10-09','10-14','merged'],
+  ['#59','p2p_frame','Signed protocol version, command bounds (→ #67)','10-09','10-15','closed'],
+  ['#63','tx_check','Serialized size in Transaction::check (→ #67)','10-14','10-15','closed'],
   ['#64','p2p_inv','Name every inventory type (→ #67)','10-14','10-15','closed'],
   ['#65','hdr_limits','headers2 up to 8000 headers (→ #67)','10-14','10-15','closed'],
-  ['#67','conformance','P2P framing, inv types, header limits as Core','10-15','10-21','merged'],
-  ['#72','align-rust-bitcoin-rev','rust-bitcoin crates from rust-dashcore rev','10-19','10-20','merged'],
+  ['#67','conformance','P2P framing, inventory types, header limits (BS7)','10-15','10-21','merged'],
+  ['#72','rust-bitcoin rev','rust-bitcoin crates from rust-dashcore\'s revision','10-19','10-20','merged'],
   ['#73','primitives-checks','Tx and block checks as Core (split from #67)','10-19','10-22','merged'],
-  ['#74','p2p-control','Type senddsq, qsendrecsigs, sendcmpct, … (split from #67)','10-19','10-22','merged'],
-  ['#84','params-v24','Validate chain params vs RPCs; spork addr, LLMQ allowlist','10-23','10-26','merged'],
+  ['#74','p2p-control','senddsq, qsendrecsigs, sendcmpct, … typed (split from #67)','10-19','10-22','merged'],
+  ['#84','params-v24','Chain params validated vs RPCs; spork address, LLMQ allowlist (BS5)','10-23','10-26','merged'],
   ['#86','p2p-handshake','Handshake and header-sync messages as Core','10-25','10-31','open'],
   ['#87','netinfo','Refuse bad NetInfo purposes; bad entries read as invalid','10-25','10-31','open'],
   ['#88','v24-payloads','Decode v24 special transactions as Core','10-25','10-31','open'],
 ];
-const col = { merged: 'var(--success)', open: 'var(--info)', closed: 'var(--muted-foreground, var(--muted))' };
-const lbl = { merged: 'Merged', open: 'Open', closed: 'Closed (superseded)' };
-const day = s => +s.split('-')[1];
-const svg = document.getElementById('gantt');
-function drawGantt() {
-  const W = svg.clientWidth || 690, left = 150, right = 14, top = 22, rowH = 22, barH = 12;
-  const H = top + PR.length * rowH + 4;
-  svg.setAttribute('height', H); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-  const d0 = 8.5, d1 = 31.5, x = d => left + (d - d0) / (d1 - d0) * (W - left - right);
-  let s = '';
-  for (let d = 9; d <= 31; d += 2) {
-    s += `<line class="grid" x1="${x(d)}" x2="${x(d)}" y1="${top - 6}" y2="${H}"/>`;
-    s += `<text class="tick" x="${x(d)}" y="12" text-anchor="middle">10-${String(d).padStart(2,'0')}</text>`;
+
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const tip = document.getElementById('tip');
+const showTip = (e, h) => { tip.innerHTML = h; tip.style.opacity = 1; moveTip(e); };
+const moveTip = e => { const w = tip.offsetWidth, h = tip.offsetHeight; let x = e.clientX + 14, y = e.clientY + 14;
+  if (x + w > innerWidth - 8) x = e.clientX - w - 14; if (y + h > innerHeight - 8) y = e.clientY - h - 14; tip.style.left = x + 'px'; tip.style.top = y + 'px'; };
+const hideTip = () => tip.style.opacity = 0;
+const bindTip = (el, h) => { el.addEventListener('mouseenter', e => showTip(e, h)); el.addEventListener('mousemove', moveTip); el.addEventListener('mouseleave', hideTip); };
+
+// Task cards
+let fArea = 'all', fUp = 'all';
+function card(x, pending) {
+  const A = AREAS[x.a];
+  const pills = pending
+    ? `<span class="pill ${x.st[0]}">${x.st[1]}</span>`
+    : `<span class="pill u-fork">In fork · ${x.date}</span><span class="pill ${UP[x.up].cls}">${UP[x.up].label}</span>`;
+  const body = pending
+    ? `<div class="grid2"><div><div class="lab">What it does</div>${x.what}</div><div><div class="lab">Why it's waiting</div>${x.why}</div></div><div class="meta"><span class="mono">${x.meta}</span></div>`
+    : `<div class="grid2"><div><div class="lab">What it does</div>${x.what}</div><div><div class="lab">Why the node needs it</div>${x.why}</div></div>
+       <div class="meta"><span><b>Upstream:</b> ${x.upn}</span><span>${x.commits ? x.commits + (x.commits === 1 ? ' commit' : ' commits') : 'merge only'} · ${x.crates}</span><span class="mono">fork ${x.sha}</span></div>
+       <details><summary>Key changes</summary><ul>${x.keys.map(k => `<li>${k}</li>`).join('')}</ul></details>`;
+  return `<div class="task" style="--c:var(${A.c})"><div class="hd"><span class="id">${x.id}</span><span class="ti">${x.t}</span><span class="pills">${pills}</span></div>${body}</div>`;
+}
+function renderTasks() {
+  let h = '';
+  for (const [k, A] of Object.entries(AREAS)) {
+    const xs = T.filter(x => x.a === k && (fArea === 'all' || fArea === k) && (fUp === 'all' || x.up === fUp));
+    if (!xs.length) continue;
+    h += `<h3 class="area-h" style="--c:var(${A.c})">${A.name} <span class="muted" style="font-weight:400;font-size:13px">· ${xs.length} task${xs.length > 1 ? 's' : ''}</span></h3><p class="area-blurb">${A.blurb}</p>` + xs.map(x => card(x)).join('');
   }
-  PR.forEach((p, i) => {
-    const [n, br, t, a, b, st] = p, y = top + i * rowH;
-    const xa = x(day(a) - 0.4), xb = x(day(b) + 0.4);
-    s += `<text x="${left - 10}" y="${y + rowH/2 + 4}" text-anchor="end" font-size="12"><tspan font-weight="600" font-family="var(--font-mono)">${n}</tspan><tspan class="tick" dx="6">${br.length > 15 ? br.slice(0,14) + '…' : br}</tspan></text>`;
-    s += `<g class="bar" data-i="${i}"><rect x="${left - 140}" y="${y}" width="${W - left + 140}" height="${rowH}" fill="transparent"/>`;
-    s += `<rect class="m" x="${xa}" y="${y + (rowH - barH)/2}" width="${Math.max(xb - xa, 6)}" height="${barH}" rx="4" fill="${col[st]}" ${st === 'closed' ? 'opacity=".55"' : ''}/>`;
-    if (st === 'open') s += `<path d="M${xb} ${y + (rowH - barH)/2} l6 ${barH/2} l-6 ${barH/2}z" fill="${col[st]}"/>`;
-    s += `</g>`;
+  document.getElementById('tasklist').innerHTML = h || '<p class="muted">No tasks match these filters.</p>';
+}
+function renderFilters() {
+  const chips = [['all', 'All areas', null], ...Object.entries(AREAS).map(([k, A]) => [k, A.name, A.c])];
+  const ups = [['all', 'Any upstream status'], ['partly', 'Partly upstream'], ['open', 'In open PR'], ['none', 'Fork only']];
+  document.getElementById('filters').innerHTML =
+    chips.map(([k, n, c]) => `<button class="chip" data-a="${k}" aria-pressed="${fArea === k}">${c ? `<i style="background:var(${c})"></i>` : ''}${n}</button>`).join('') +
+    '<span style="width:100%"></span>' +
+    ups.map(([k, n]) => `<button class="chip" data-u="${k}" aria-pressed="${fUp === k}">${k !== 'all' ? `<i style="background:var(${UP[k].c})"></i>` : ''}${n}</button>`).join('');
+  document.querySelectorAll('#filters .chip').forEach(b => b.onclick = () => {
+    if (b.dataset.a) fArea = b.dataset.a; else fUp = b.dataset.u; renderFilters(); renderTasks(); });
+}
+renderFilters(); renderTasks();
+document.getElementById('pendinglist').innerHTML = PENDING.map(x => card(x, true)).join('');
+
+// Where-the-work-is chart
+function drawMap() {
+  const svg = document.getElementById('mapchart');
+  const rows = []; let lastA = null;
+  T.filter(x => x.commits > 0).forEach(x => { if (x.a !== lastA) { rows.push({ head: x.a }); lastA = x.a; } rows.push(x); });
+  const W = svg.clientWidth || 860, left = 200, right = 40, rowH = 20, headH = 24, top = 6;
+  let y = top; const pos = rows.map(r => { const p = y; y += r.head ? headH : rowH; return p; });
+  const H = y + 22; svg.setAttribute('height', H); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const max = 40, x = v => left + v / max * (W - left - right);
+  let s = '';
+  for (let v = 0; v <= max; v += 10) s += `<line class="gridl" x1="${x(v)}" x2="${x(v)}" y1="${top}" y2="${H - 18}"/><text class="tick" x="${x(v)}" y="${H - 4}" text-anchor="middle">${v}</text>`;
+  rows.forEach((r, i) => {
+    const yy = pos[i];
+    if (r.head) { const A = AREAS[r.head]; s += `<rect x="0" y="${yy + 8}" width="4" height="12" rx="1" fill="var(${A.c})"/><text x="10" y="${yy + 18}" font-size="12" font-weight="650">${A.name}</text>`; return; }
+    const c = `var(${UP[r.up].c})`, bw = Math.max(x(r.commits) - left, 3);
+    s += `<g class="hit" data-id="${r.id}"><rect x="0" y="${yy}" width="${W}" height="${rowH}" fill="transparent"/>
+      <text x="${left - 10}" y="${yy + 14}" text-anchor="end" font-size="12"><tspan font-family="var(--mono)" font-weight="650">${r.id}</tspan></text>
+      <rect class="m" x="${left}" y="${yy + 4}" width="${bw}" height="12" rx="3" fill="${c}"/>
+      <text x="${left + bw + 6}" y="${yy + 14}" font-size="11" class="tick">${r.commits}</text></g>`;
   });
   svg.innerHTML = s;
-  svg.querySelectorAll('.bar').forEach(g => {
-    const p = PR[+g.dataset.i];
-    const html = `<b>${p[0]} · ${p[1]}</b>${p[2]}<div class="muted" style="margin-top:4px">Opened 10-${p[3].split('-')[1]} · ${p[5] === 'open' ? 'still open' : lbl[p[5]].toLowerCase() + ' 10-' + p[4].split('-')[1]}</div>`;
-    g.addEventListener('mouseenter', e => showTip(e, html));
-    g.addEventListener('mousemove', moveTip);
-    g.addEventListener('mouseleave', hideTip);
-  });
+  svg.querySelectorAll('.hit').forEach(g => { const r = T.find(t => t.id === g.dataset.id);
+    bindTip(g, `<b>${r.id} · ${r.t}</b>${UP[r.up].label}: ${r.upn}<div class="muted" style="margin-top:4px">${r.commits} commit${r.commits === 1 ? '' : 's'} · ${r.crates} · merged into fork ${r.date}</div>`); });
 }
-drawGantt(); addEventListener('resize', drawGantt);
 
-// Fork cards
-const F = [
-  ['BS11a-t','098dafd','BLS decode types: BlsEager/BlsLazy, run-time scheme selection'],
-  ['BS4a','481f8c3','Decode domain as Core reads it: CoreBool, MAX_SIZE caps, signed TxOut, ProtoCtx'],
-  ['BS5','23f6fd7','dash-params: Devnet, ChainParamsBuilder, LLMQ tables'],
-  ['BS6a','a1d4dd3','v24 primitive shapes'],
-  ['BS6b','dfee0b8','Per-payload sighashes; v24 stable txid for v2 asset unlocks'],
-  ['BS7','4b4e76b','dash-p2p-core. Upstreamed as #67, #73, #74; #86 open'],
-  ['BS8','dbe245f','Overlay I: CL, IS, recsig, QC, QRInfo, MnListDiff, MNAUTH, spork'],
-  ['BS9a','a33623f','Overlay II: DKG and sig-share messages'],
-  ['BS9b','8382b76','Overlay III: CoinJoin and governance'],
-  ['BS12','0324e1c','BLS vector corpus via Core; pool-free verify'],
-  ['BS11a-1…4','f27bc4f5','Legacy BLS: Exotic points, relic vectors, relic arithmetic port incl. Miller loop, bls::core'],
-  ['BS11b','518b7896','dash-pkc API: aggregates, threshold ops, IES'],
-  ['R6 netinfo','1cacb811','NetInfo m1/m2 and c/d/e fix rounds'],
-  ['SW-UPSTREAM 10-28','e96259ce','Merged develop addedfa1'],
-  ['SW-UPSTREAM 10-30','56c4cd90','Merged develop 89828032 (#83, #84); cherry-picked #95 libz-sys (closes BL-553)'],
-  ['BS5-R','1976a145','Release/ChainSetup, devnet genesis, Core chain-params options, spork signers'],
-  ['SW-V24 S5','b6853466','v24.0 tables → rc.5; min_blocks_to_keep (10-31)'],
-];
-document.getElementById('forkcards').innerHTML = F.map(f =>
-  `<div class="card"><div class="t">${f[0]}<span class="mono muted">${f[1]}</span></div><div class="d">${f[2]}</div></div>`).join('');
-</script>
-<footer>Snapshot 2026-10-31 ~16:55Z. Published from a Claude Code session; figures come from git and GitHub at that time and will drift.</footer>
-<script>
+// Upstream gantt
+function drawGantt() {
+  const svg = document.getElementById('gantt');
+  const W = svg.clientWidth || 860, left = 170, right = 16, top = 22, rowH = 22, barH = 12;
+  const H = top + PR.length * rowH + 4; svg.setAttribute('height', H); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const d0 = 8.5, d1 = 31.6, x = d => left + (d - d0) / (d1 - d0) * (W - left - right), day = s => +s.split('-')[1];
+  const col = { merged: 'var(--ok)', open: 'var(--open)', closed: 'var(--none)' };
+  let s = '';
+  for (let d = 9; d <= 31; d += 2) s += `<line class="gridl" x1="${x(d)}" x2="${x(d)}" y1="${top - 6}" y2="${H}"/><text class="tick" x="${x(d)}" y="12" text-anchor="middle">10-${String(d).padStart(2, '0')}</text>`;
+  PR.forEach((p, i) => { const [n, br, , a, b, st] = p, y = top + i * rowH, xa = x(day(a) - .4), xb = x(day(b) + .4);
+    s += `<g class="hit" data-i="${i}"><rect x="0" y="${y}" width="${W}" height="${rowH}" fill="transparent"/>
+      <text x="${left - 10}" y="${y + 15}" text-anchor="end" font-size="12"><tspan font-weight="650" font-family="var(--mono)">${n}</tspan><tspan class="tick" dx="6">${br}</tspan></text>
+      <rect class="m" x="${xa}" y="${y + 5}" width="${xb - xa}" height="${barH}" rx="4" fill="${col[st]}" ${st === 'closed' ? 'opacity=".55"' : ''}/>
+      ${st === 'open' ? `<path d="M${xb} ${y + 5} l6 ${barH / 2} l-6 ${barH / 2}z" fill="${col[st]}"/>` : ''}</g>`; });
+  svg.innerHTML = s;
+  svg.querySelectorAll('.hit').forEach(g => { const p = PR[+g.dataset.i];
+    bindTip(g, `<b>${p[0]} · ${p[1]}</b>${p[2]}<div class="muted" style="margin-top:4px">Opened ${p[3]} · ${p[5] === 'open' ? 'still open' : (p[5] === 'merged' ? 'merged ' : 'closed ') + p[4]}</div>`); });
+}
+const drawAll = () => { drawMap(); drawGantt(); };
+drawAll(); addEventListener('resize', drawAll);
+
+// Theme toggle
 (() => {
-  const root = document.documentElement, btn = document.getElementById('themebtn');
-  const modes = ['auto', 'light', 'dark'];
+  const root = document.documentElement, btn = document.getElementById('themebtn'), modes = ['auto', 'light', 'dark'];
   let m = localStorage.getItem('bsdk-theme') || 'auto';
   const apply = () => { if (m === 'auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', m); btn.textContent = 'Theme: ' + m; };
-  btn.addEventListener('click', () => { m = modes[(modes.indexOf(m) + 1) % 3]; localStorage.setItem('bsdk-theme', m); apply(); });
+  btn.onclick = () => { m = modes[(modes.indexOf(m) + 1) % 3]; localStorage.setItem('bsdk-theme', m); apply(); };
   apply();
 })();
 </script>

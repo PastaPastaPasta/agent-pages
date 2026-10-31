@@ -1,0 +1,314 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Base-sdk work by the rust-dashcore agent · 2026-10-31</title>
+<style>
+  :root {
+    --background: #f7fafc; --foreground: #1b2733; --muted: #5c6b7a; --muted-foreground: #5c6b7a;
+    --card: #ffffff; --popover: #ffffff; --popover-foreground: #1b2733; --border: #dbe4ec;
+    --success: #18794a; --info: #006bb0; --warning: #9a5700; --warning-surface: #fff6e8;
+    --destructive: #c0362c; --chart-1: #0e7c86; --accent: #006bb0;
+    --radius: 8px;
+    --font-sans: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --background: #101820; --foreground: #dde6ee; --muted: #93a3b2; --muted-foreground: #93a3b2;
+      --card: #17212b; --popover: #1d2935; --popover-foreground: #dde6ee; --border: #2a3844;
+      --success: #3fbf7f; --info: #6fbdf2; --warning: #e7a645; --warning-surface: #2a2216;
+      --destructive: #f2776c; --chart-1: #3cc4c9; --accent: #6fbdf2; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --background: #101820; --foreground: #dde6ee; --muted: #93a3b2; --muted-foreground: #93a3b2;
+    --card: #17212b; --popover: #1d2935; --popover-foreground: #dde6ee; --border: #2a3844;
+    --success: #3fbf7f; --info: #6fbdf2; --warning: #e7a645; --warning-surface: #2a2216;
+    --destructive: #f2776c; --chart-1: #3cc4c9; --accent: #6fbdf2; color-scheme: dark;
+  }
+  html { background: var(--background); }
+  body { background: var(--background); max-width: 860px; margin: 0 auto !important; padding: 2.5rem 1.25rem 4rem; font-size: 14px !important; }
+  .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 13px; }
+  .topbar a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  .topbar a:hover { text-decoration: underline; }
+  #themebtn { font: inherit; font-size: 12px; color: var(--foreground); background: var(--card); border: 1px solid var(--border); border-radius: 999px; padding: 3px 12px; cursor: pointer; }
+  h1 { font-size: 24px; letter-spacing: -0.01em; margin: 0 0 4px; }
+  footer { margin-top: 36px; font-size: 12px; color: var(--muted-foreground); border-top: 1px solid var(--border); padding-top: 12px; }
+</style>
+<style>
+  :root { --gap: 12px; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font-sans); color: var(--foreground); font-size: 13px; line-height: 1.45; }
+  h2 { font-size: 15px; font-weight: 600; margin: 28px 0 4px; }
+  h2:first-child { margin-top: 0; } h1 + .sub { margin-bottom: 18px; }
+  .sub { color: var(--muted-foreground, var(--muted)); font-size: 12px; margin: 0 0 12px; }
+  .mono { font-family: var(--font-mono); font-size: 11.5px; }
+  .muted { color: var(--muted-foreground, var(--muted)); }
+
+  .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--gap); }
+  .kpi { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
+  .kpi .n { font-size: 26px; font-weight: 650; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .kpi .l { font-size: 12px; color: var(--muted-foreground, var(--muted)); }
+  .kpi .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
+
+  .pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--border); white-space: nowrap; }
+  .pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+  .s-merged  { color: var(--success); }
+  .s-open    { color: var(--info); }
+  .s-closed  { color: var(--muted-foreground, var(--muted)); }
+  .s-fork    { color: var(--chart-1); }
+  .s-local   { color: var(--warning); }
+  .s-stalled { color: var(--destructive); }
+  .s-run     { color: var(--info); }
+  .s-def     { color: var(--muted-foreground, var(--muted)); }
+
+  .box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; margin-bottom: 8px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 14px; height: 8px; border-radius: 2px; display: inline-block; }
+
+  svg text { fill: var(--foreground); font-family: var(--font-sans); }
+  .tick { fill: var(--muted-foreground, var(--muted)); font-size: 10.5px; }
+  .grid { stroke: var(--border); stroke-width: 1; }
+  .bar { cursor: default; }
+  .bar:hover rect.m { filter: brightness(1.15); }
+
+  #tip { position: fixed; pointer-events: none; background: var(--popover); color: var(--popover-foreground, var(--foreground)); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 10px; font-size: 12px; max-width: 300px; box-shadow: 0 4px 16px rgb(0 0 0 / .25); opacity: 0; transition: opacity .08s; z-index: 9; }
+  #tip b { display: block; margin-bottom: 2px; }
+
+  .div { display: grid; grid-template-columns: 110px 1fr 52px; gap: 6px 10px; align-items: center; }
+  .track { height: 16px; position: relative; }
+  .track .f { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 0 4px 4px 0; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted-foreground, var(--muted)); padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  td { padding: 7px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  td.id { font-family: var(--font-mono); font-size: 12px; white-space: nowrap; font-weight: 600; }
+
+  .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .card { border: 1px solid var(--border); border-left: 3px solid var(--chart-1); border-radius: var(--radius); padding: 8px 10px; background: var(--card); }
+  .card .t { font-weight: 600; }
+  .card .t .mono { font-weight: 500; margin-left: 6px; }
+  .card .d { font-size: 12px; color: var(--muted-foreground, var(--muted)); margin-top: 2px; }
+
+  .callout { border-radius: var(--radius); padding: 12px 14px; border: 1px solid var(--border); background: var(--warning-surface, var(--card)); }
+  .callout + .callout { margin-top: 8px; }
+  .callout b { color: var(--warning); }
+  .flow { display: grid; grid-template-columns: 1fr 34px 1fr 34px 1fr; align-items: stretch; gap: 0; }
+  .flow .node { border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; background: var(--card); }
+  .flow .node .h { font-weight: 600; }
+  .flow .arr { display: flex; align-items: center; justify-content: center; color: var(--muted-foreground, var(--muted)); font-size: 18px; }
+  @media (max-width: 560px) {
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .cards { grid-template-columns: 1fr; }
+    .flow { grid-template-columns: 1fr; }
+    .flow .arr { transform: rotate(90deg); height: 26px; }
+  }
+</style>
+</head>
+<body>
+<div id="tip"></div>
+
+<div class="topbar"><a href="./">← Pasta's Pages</a><button id="themebtn" type="button">Theme: auto</button></div>
+<h1>Base-sdk work by the rust-dashcore agent</h1>
+<p class="sub">Snapshot 2026-10-31 ~16:55Z · from the local base-sdk fork, GitHub, and the program's status, decision and backlog logs</p>
+
+<div class="kpis">
+  <div class="kpi"><div class="n">7</div><div class="l"><span class="dot" style="background:var(--success)"></span>merged upstream</div></div>
+  <div class="kpi"><div class="n">3</div><div class="l"><span class="dot" style="background:var(--info)"></span>open upstream PRs</div></div>
+  <div class="kpi"><div class="n">4</div><div class="l"><span class="dot" style="background:var(--muted-foreground,var(--muted))"></span>closed, folded into #67</div></div>
+  <div class="kpi"><div class="n">17</div><div class="l"><span class="dot" style="background:var(--chart-1)"></span>tasks merged into fork</div></div>
+  <div class="kpi"><div class="n">3</div><div class="l"><span class="dot" style="background:var(--warning)"></span>done locally, not in fork</div></div>
+</div>
+
+<h2>How work flows</h2>
+<p class="sub">Task branches merge into the local fork, rust-dashcore pins to it, and selected units are rebuilt in kwvg's conventions as upstream PRs</p>
+<div class="flow">
+  <div class="node"><div class="h">Task branches</div><div class="muted mono">node/bsdk-&lt;slug&gt;</div><div style="margin-top:4px">Reviewed (Opus / Sol), <span class="mono">just comb</span> per commit</div></div>
+  <div class="arr">→</div>
+  <div class="node" style="border-color:var(--chart-1)"><div class="h">Local fork</div><div class="muted mono">node/base-sdk @ b6853466</div><div style="margin-top:4px">Pinned by rust-dashcore via <span class="mono">file://</span>. Mirror pushed as <span class="mono">node-sdk-integration</span></div></div>
+  <div class="arr">→</div>
+  <div class="node" style="border-color:var(--success)"><div class="h">dashpay/base-sdk</div><div class="muted mono">develop @ 5a11e0ab</div><div style="margin-top:4px">PRs from PastaPastaPasta, rebuilt per unit (DEC-91)</div></div>
+</div>
+
+<h2>Fork divergence from upstream develop</h2>
+<p class="sub">Merge base 89828032 (#84). Most of the BLS, overlay and decode-domain work exists only on the fork</p>
+<div class="box">
+  <div class="div" id="divg"></div>
+</div>
+
+<h2>Upstream PR timeline</h2>
+<p class="sub">Each bar runs from open to merge or close; open PRs run to today. Hover a bar for detail</p>
+<div class="box">
+  <div class="legend">
+    <span><i style="background:var(--success)"></i>Merged</span>
+    <span><i style="background:var(--info)"></i>Open (waiting on kwvg)</span>
+    <span><i style="background:var(--muted-foreground,var(--muted));opacity:.55"></i>Closed, superseded</span>
+  </div>
+  <svg id="gantt" width="100%" role="img" aria-label="Timeline of base-sdk upstream PRs"></svg>
+</div>
+
+<h2>Open upstream PRs</h2>
+<div class="box" style="padding:4px 8px">
+<table>
+  <tr><th>PR</th><th>Topic</th><th>Head</th><th>State</th></tr>
+  <tr><td class="id">#86</td><td><b>p2p-handshake</b> · handshake and header-sync messages as Core does<br><span class="muted">CHANGES_REQUESTED; one bot thread is a standing false positive (~52 h)</span></td><td class="mono">f1e47106<br><span class="muted">8 commits</span></td><td><span class="pill s-open">Waiting kwvg</span></td></tr>
+  <tr><td class="id">#87</td><td><b>netinfo</b> · refuse bad purposes, read bad entries as invalid<br><span class="muted">r7 pushed 07:25Z; thepastaclaw APPROVED 08:23Z; encode gap deferred to #40 "Known Issues"</span></td><td class="mono">a77f57fc<br><span class="muted">12 commits</span></td><td><span class="pill s-open">Waiting kwvg</span></td></tr>
+  <tr><td class="id">#88</td><td><b>v24-payloads</b> · decode v24 special txs as Core does<br><span class="muted">r4 pushed 07:36Z. <b style="color:var(--warning)">Legacy-scheme-key thread (r4431014458) is held for you</b>, unanswered by design</span></td><td class="mono">b46ced48<br><span class="muted">18 commits</span></td><td><span class="pill s-open">Waiting kwvg</span> <span class="pill s-local">Your call</span></td></tr>
+</table>
+<p class="muted" style="margin:6px 8px 8px;font-size:12px">All three merge-tree clean against develop 5a11e0ab; no rebase needed unless kwvg asks.</p>
+</div>
+
+<h2>Merged into the local fork only</h2>
+<p class="sub">Done, reviewed, <span class="mono">--no-ff</span> merged into <span class="mono">node/base-sdk</span>, and pinned by rust-dashcore. Not upstream unless noted</p>
+<div class="cards" id="forkcards"></div>
+
+<h2>Done locally, not merged into the fork</h2>
+<div class="box" style="padding:4px 8px">
+<table>
+  <tr><th>Task</th><th>What</th><th>Branch</th><th>State</th></tr>
+  <tr><td class="id">BL-413</td><td>LLMQ corpus tests compare recorded DKG signatures instead of self-signing</td><td class="mono">node/bsdk-bl413<br>5370c7df · 1 commit</td><td><span class="pill s-local">Held for pkc batch</span></td></tr>
+  <tr><td class="id">BL-443</td><td>Perf: fold secure-aggregate keys as they are read back (27% alloc regression in <span class="mono">qc-block-mainnet</span>)</td><td class="mono">node/bsdk-bl443<br>6f2bbc5f · 1 commit</td><td><span class="pill s-local">Held for pkc batch</span></td></tr>
+  <tr><td class="id">BS13</td><td>Perf helpers: <span class="mono">encoded_len</span>, streaming SHA256d, <span class="mono">decode_with_ranges</span>. Blocking findings were fixed by BS6b on 10-18, but BS13 was never follow-merged; row unchanged since 10-17</td><td class="mono">node/bsdk-bs13-perf-helpers<br>69d1d4b5 · 14 commits</td><td><span class="pill s-stalled">Stalled</span></td></tr>
+</table>
+</div>
+
+<h2>In progress now</h2>
+<div class="box" style="padding:4px 8px">
+<table>
+  <tr><th>Stream</th><th>What</th><th>State</th></tr>
+  <tr><td class="id">SW-UPSTREAM</td><td>Re-pin rust-dashcore to the BS5-R fork; follow-merge of integration T68 got Opus APPROVE. Remaining 81 develop commits (#85–#96) ride the next weekly sync</td><td><span class="pill s-run">Fork CI 41220554621</span></td></tr>
+  <tr><td class="id">SW-V24</td><td>rc.4 → rc.5 pin-move train. Base-sdk part (S5, b6853466) done. Deadline 11-09</td><td><span class="pill s-run">Train in flight</span></td></tr>
+</table>
+</div>
+
+<h2>Not started or deferred</h2>
+<div class="box" style="padding:4px 8px">
+<table>
+  <tr><th>Task</th><th>What</th><th>Status</th></tr>
+  <tr><td class="id">BS10</td><td>Type all 74 P2P commands with <span class="mono">decode_with_policy</span></td><td><span class="pill s-def">Deferred behind open PRs (DEC-508)</span></td></tr>
+  <tr><td class="id">BS11c</td><td>Core-style BLS <span class="mono">sign</span> for both schemes</td><td><span class="pill s-def">Planned M5</span></td></tr>
+  <tr><td class="id">BL-415</td><td>Corpus checker reproduces upstream <span class="mono">sign_message</span> values</td><td><span class="pill s-def">Waits for pkc batch</span></td></tr>
+  <tr><td class="id">pkc batch</td><td>BL-413 + BL-415 + BL-443 as one upstream PR batch</td><td><span class="pill s-def">Not opened</span></td></tr>
+  <tr><td class="id">BLS/overlay</td><td>BS8–BS9b, BS11a-*, BS11b, BS12 upstreaming</td><td><span class="pill s-local">Not proposed · your call (DEC-09)</span></td></tr>
+</table>
+</div>
+
+<h2>Caveats</h2>
+<div class="callout"><b>Stale ledger.</b> The program's fork ledger stops at BS9b and still lists #67 as open. The fork lists above are rebuilt from git; trust them over that file.</div>
+<div class="callout"><b>Review state.</b> GitHub still shows CHANGES_REQUESTED on all three open PRs from earlier rounds. Only the latest few reviews on each were read.</div>
+<div class="callout"><b>#72</b> (rust-bitcoin rev alignment) came from your account but isn't in the manager's linked-PR list; it may belong to another thread.</div>
+
+<script>
+const tip = document.getElementById('tip');
+function showTip(e, html) { tip.innerHTML = html; tip.style.opacity = 1; moveTip(e); }
+function moveTip(e) {
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = e.clientX + 14, y = e.clientY + 14;
+  if (x + w > innerWidth - 8) x = e.clientX - w - 14;
+  if (y + h > innerHeight - 8) y = e.clientY - h - 14;
+  tip.style.left = x + 'px'; tip.style.top = y + 'px';
+}
+function hideTip() { tip.style.opacity = 0; }
+
+// Divergence bars (one axis: commits)
+const dv = [
+  { l: 'Ahead (fork only)', n: 226, c: 'var(--chart-1)' },
+  { l: 'Behind develop', n: 81, c: 'var(--muted-foreground, var(--muted))' },
+];
+const dmax = 226;
+document.getElementById('divg').innerHTML = dv.map(d =>
+  `<div>${d.l}</div><div class="track"><div class="f" style="width:${d.n / dmax * 100}%;background:${d.c}"></div></div><div class="mono" style="text-align:right">${d.n}</div>`
+).join('') + `<div></div><div class="muted" style="font-size:12px">commits vs <span class="mono">origin/develop</span>; behind = #85–#96 (Bazel, CI, refactors, pow perf)</div><div></div>`;
+
+// Gantt
+const PR = [
+  ['#57','codec_size','Range-check decoded lengths, Core decode-time caps','10-09','10-13','merged'],
+  ['#58','llmq_types','Name LLMQ types 103/105; params reuses LlmqType','10-09','10-14','merged'],
+  ['#59','p2p_frame','ProtocolVersion signed, bound commands (→ #67)','10-09','10-15','closed'],
+  ['#63','tx_check','Serialized tx size in Transaction::check (→ #67)','10-14','10-15','closed'],
+  ['#64','p2p_inv','Name every inventory type (→ #67)','10-14','10-15','closed'],
+  ['#65','hdr_limits','headers2 up to 8000 headers (→ #67)','10-14','10-15','closed'],
+  ['#67','conformance','P2P framing, inv types, header limits as Core','10-15','10-21','merged'],
+  ['#72','align-rust-bitcoin-rev','rust-bitcoin crates from rust-dashcore rev','10-19','10-20','merged'],
+  ['#73','primitives-checks','Tx and block checks as Core (split from #67)','10-19','10-22','merged'],
+  ['#74','p2p-control','Type senddsq, qsendrecsigs, sendcmpct, … (split from #67)','10-19','10-22','merged'],
+  ['#84','params-v24','Validate chain params vs RPCs; spork addr, LLMQ allowlist','10-23','10-26','merged'],
+  ['#86','p2p-handshake','Handshake and header-sync messages as Core','10-25','10-31','open'],
+  ['#87','netinfo','Refuse bad NetInfo purposes; bad entries read as invalid','10-25','10-31','open'],
+  ['#88','v24-payloads','Decode v24 special transactions as Core','10-25','10-31','open'],
+];
+const col = { merged: 'var(--success)', open: 'var(--info)', closed: 'var(--muted-foreground, var(--muted))' };
+const lbl = { merged: 'Merged', open: 'Open', closed: 'Closed (superseded)' };
+const day = s => +s.split('-')[1];
+const svg = document.getElementById('gantt');
+function drawGantt() {
+  const W = svg.clientWidth || 690, left = 150, right = 14, top = 22, rowH = 22, barH = 12;
+  const H = top + PR.length * rowH + 4;
+  svg.setAttribute('height', H); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const d0 = 8.5, d1 = 31.5, x = d => left + (d - d0) / (d1 - d0) * (W - left - right);
+  let s = '';
+  for (let d = 9; d <= 31; d += 2) {
+    s += `<line class="grid" x1="${x(d)}" x2="${x(d)}" y1="${top - 6}" y2="${H}"/>`;
+    s += `<text class="tick" x="${x(d)}" y="12" text-anchor="middle">10-${String(d).padStart(2,'0')}</text>`;
+  }
+  PR.forEach((p, i) => {
+    const [n, br, t, a, b, st] = p, y = top + i * rowH;
+    const xa = x(day(a) - 0.4), xb = x(day(b) + 0.4);
+    s += `<text x="${left - 10}" y="${y + rowH/2 + 4}" text-anchor="end" font-size="12"><tspan font-weight="600" font-family="var(--font-mono)">${n}</tspan><tspan class="tick" dx="6">${br.length > 15 ? br.slice(0,14) + '…' : br}</tspan></text>`;
+    s += `<g class="bar" data-i="${i}"><rect x="${left - 140}" y="${y}" width="${W - left + 140}" height="${rowH}" fill="transparent"/>`;
+    s += `<rect class="m" x="${xa}" y="${y + (rowH - barH)/2}" width="${Math.max(xb - xa, 6)}" height="${barH}" rx="4" fill="${col[st]}" ${st === 'closed' ? 'opacity=".55"' : ''}/>`;
+    if (st === 'open') s += `<path d="M${xb} ${y + (rowH - barH)/2} l6 ${barH/2} l-6 ${barH/2}z" fill="${col[st]}"/>`;
+    s += `</g>`;
+  });
+  svg.innerHTML = s;
+  svg.querySelectorAll('.bar').forEach(g => {
+    const p = PR[+g.dataset.i];
+    const html = `<b>${p[0]} · ${p[1]}</b>${p[2]}<div class="muted" style="margin-top:4px">Opened 10-${p[3].split('-')[1]} · ${p[5] === 'open' ? 'still open' : lbl[p[5]].toLowerCase() + ' 10-' + p[4].split('-')[1]}</div>`;
+    g.addEventListener('mouseenter', e => showTip(e, html));
+    g.addEventListener('mousemove', moveTip);
+    g.addEventListener('mouseleave', hideTip);
+  });
+}
+drawGantt(); addEventListener('resize', drawGantt);
+
+// Fork cards
+const F = [
+  ['BS11a-t','098dafd','BLS decode types: BlsEager/BlsLazy, run-time scheme selection'],
+  ['BS4a','481f8c3','Decode domain as Core reads it: CoreBool, MAX_SIZE caps, signed TxOut, ProtoCtx'],
+  ['BS5','23f6fd7','dash-params: Devnet, ChainParamsBuilder, LLMQ tables'],
+  ['BS6a','a1d4dd3','v24 primitive shapes'],
+  ['BS6b','dfee0b8','Per-payload sighashes; v24 stable txid for v2 asset unlocks'],
+  ['BS7','4b4e76b','dash-p2p-core. Upstreamed as #67, #73, #74; #86 open'],
+  ['BS8','dbe245f','Overlay I: CL, IS, recsig, QC, QRInfo, MnListDiff, MNAUTH, spork'],
+  ['BS9a','a33623f','Overlay II: DKG and sig-share messages'],
+  ['BS9b','8382b76','Overlay III: CoinJoin and governance'],
+  ['BS12','0324e1c','BLS vector corpus via Core; pool-free verify'],
+  ['BS11a-1…4','f27bc4f5','Legacy BLS: Exotic points, relic vectors, relic arithmetic port incl. Miller loop, bls::core'],
+  ['BS11b','518b7896','dash-pkc API: aggregates, threshold ops, IES'],
+  ['R6 netinfo','1cacb811','NetInfo m1/m2 and c/d/e fix rounds'],
+  ['SW-UPSTREAM 10-28','e96259ce','Merged develop addedfa1'],
+  ['SW-UPSTREAM 10-30','56c4cd90','Merged develop 89828032 (#83, #84); cherry-picked #95 libz-sys (closes BL-553)'],
+  ['BS5-R','1976a145','Release/ChainSetup, devnet genesis, Core chain-params options, spork signers'],
+  ['SW-V24 S5','b6853466','v24.0 tables → rc.5; min_blocks_to_keep (10-31)'],
+];
+document.getElementById('forkcards').innerHTML = F.map(f =>
+  `<div class="card"><div class="t">${f[0]}<span class="mono muted">${f[1]}</span></div><div class="d">${f[2]}</div></div>`).join('');
+</script>
+<footer>Snapshot 2026-10-31 ~16:55Z. Published from a Claude Code session; figures come from git and GitHub at that time and will drift.</footer>
+<script>
+(() => {
+  const root = document.documentElement, btn = document.getElementById('themebtn');
+  const modes = ['auto', 'light', 'dark'];
+  let m = localStorage.getItem('bsdk-theme') || 'auto';
+  const apply = () => { if (m === 'auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', m); btn.textContent = 'Theme: ' + m; };
+  btn.addEventListener('click', () => { m = modes[(modes.indexOf(m) + 1) % 3]; localStorage.setItem('bsdk-theme', m); apply(); });
+  apply();
+})();
+</script>
+</body>
+</html>

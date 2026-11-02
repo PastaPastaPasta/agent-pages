@@ -52,10 +52,14 @@ function barChart(svg, data, opts = {}) {
     let acc = 0; const x = l + i * bw + 3, w = Math.max(bw - 6, 2);
     let tipTxt = `<b>${esc(d.label)}</b>`;
     series.forEach(se => { const v = d[se.key] || 0; if (!v) return; const y0 = y(acc), y1 = y(acc + v); acc += v;
-      s += `<rect class="m" x="${x}" y="${y1}" width="${w}" height="${Math.max(y0 - y1 - (acc > v ? 2 : 0), 1)}" rx="3" fill="var(${se.color})"/>`;
+      s += `<rect class="m" x="${x}" y="${y1}" width="${w}" height="${Math.max(y0 - y1 - (acc > v ? 2 : 0), 1)}" rx="3" fill="var(${se.color})"${d.dim ? ' fill-opacity="0.45"' : ''}/>`;
       tipTxt += `${se.label ? esc(se.label) + ': ' : ''}${v}<br>`; });
     s += `<rect class="hit-rect" data-i="${i}" x="${l + i * bw}" y="${t}" width="${bw}" height="${H - t - b}" fill="transparent"/>`;
-    if (data.length <= 16 || i % Math.ceil(data.length / 12) === 0) s += `<text class="tick" x="${x + w / 2}" y="${H - 8}" text-anchor="middle">${esc(d.short || d.label)}</text>`;
+    // d.always: always labelled (the last bar's label ends at the right edge); regular labels it would overlap are dropped
+    const end = d.always && i === data.length - 1, clear = Math.ceil(80 / bw);
+    if (d.always) s += `<text class="tick" x="${end ? x + w : x + w / 2}" y="${H - 8}" text-anchor="${end ? 'end' : 'middle'}">${esc(d.short || d.label)}</text>`;
+    else if ((data.length <= 16 || i % Math.ceil(data.length / 12) === 0) && !data.some((o, j) => o.always && Math.abs(j - i) <= clear))
+      s += `<text class="tick" x="${x + w / 2}" y="${H - 8}" text-anchor="middle">${esc(d.short || d.label)}</text>`;
     d._tip = tipTxt;
   });
   svg.innerHTML = s;

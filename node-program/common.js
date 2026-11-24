@@ -180,7 +180,15 @@ function waitGroups(el, waiting, href, snap, all) {
 function msCount(ts) { const c = {}; ts.forEach(t => c[t.state] = (c[t.state] || 0) + 1); const d = c.dropped || 0; return `${c.merged || 0}/${ts.length - d} merged${d ? ` · ${d} dropped` : ''}`; }
 // phone: the milestone chart becomes a list with full dates
 function msList(el, ms, tasksOf) {
-  el.innerHTML = `<table class="mslist"><tr><th>Milestone</th><th>Plan target</th><th>Tasks</th></tr>${ms.map(m => `<tr><td><b>${esc(m.id)}</b> ${esc(m.name)}</td><td class="mono">${esc(m.target)}</td><td class="small" data-msct>${msCount(tasksOf(m))}</td></tr>`).join('')}</table>`;
+  el.innerHTML = `<table class="mslist"><tr><th>Milestone</th><th>Target</th><th>Tasks</th></tr>${ms.map(m => `<tr><td><b>${esc(m.id)}</b> ${esc(m.name)}</td><td class="mono">${esc(msTarget(m))}</td><td class="small" data-msct>${m.goal ? 'goal' : msCount(tasksOf(m))}</td></tr>`).join('')}</table>`;
+}
+// targets: an exact date, or pasta's wording ("early Apr 2027"); was = the plan target before the 11-12 re-baseline
+const msTarget = m => m.targetText || m.target;
+function msWhen(m) { return `${m.weeks ? `Weeks ${esc(m.weeks)} · target` : 'Target'} ${esc(msTarget(m))}${m.was ? ` (re-baselined 11-12; was ${esc(m.was)})` : ''}${m.forecast ? ` · 11-23 forecast ${esc(m.forecast.date)}, ${esc(m.forecast.verdict)}` : ''}`; }
+function msDiamond(m, x, cy) { if (!m.forecast) return ''; const fx = x(m.forecast.date); return `<path d="M${fx} ${cy - 7} l6 7 l-6 7 l-6 -7 z" fill="var(--fg)" stroke="var(--bg)" stroke-width="1.5"><title>11-23 forecast (base) ${esc(m.forecast.date)}: ${esc(m.forecast.verdict)}</title></path>`; }
+function msForecast(el, ms) {
+  const f = ms.filter(m => m.forecast); if (!el || !f.length) return;
+  el.innerHTML = `<table class="mslist"><tr><th>11-23 forecast (base)</th><th>Target</th><th>Forecast</th><th>Verdict</th></tr>${f.map(m => `<tr><td><b>${esc(m.id)}</b> ${esc(m.name)}</td><td class="mono">${esc(msTarget(m))}</td><td class="mono">${esc(m.forecast.date)}</td><td>${esc(m.forecast.verdict)}</td></tr>`).join('')}</table>`;
 }
 function todayMarker(x, top, H, date) {
   return `<g data-today="${esc(date)}"><line x1="${x}" x2="${x}" y1="${top - 8}" y2="${H}" stroke="var(--bad)" stroke-width="1.5" stroke-dasharray="3 3"/><text x="${x + 4}" y="${top - 2}" font-size="10.5" fill="var(--bad)">today ${esc(date.slice(5))}</text></g>`;

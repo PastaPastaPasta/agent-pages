@@ -1,0 +1,116 @@
+1
+00:00:00,120 --> 00:00:03,440
+The intent of the product is to harmonize
+
+2
+00:00:03,460 --> 00:00:06,040
+the desktop experience with the mobile
+
+3
+00:00:06,040 --> 00:00:08,610
+experience while bringing the new features
+
+4
+00:00:08,610 --> 00:00:11,450
+to desktop that historically have not
+
+5
+00:00:11,450 --> 00:00:12,690
+been super accessible.
+
+6
+00:00:12,690 --> 00:00:15,230
+But CoinJoin is implemented and working.
+
+7
+00:00:15,410 --> 00:00:16,610
+You can choose how many rounds you
+
+8
+00:00:16,610 --> 00:00:18,450
+want, everything like that.
+
+9
+00:00:18,450 --> 00:00:21,050
+Shielded pool is also functional and
+
+10
+00:00:21,050 --> 00:00:22,730
+so this is sped up a good bit, but
+
+11
+00:00:22,730 --> 00:00:25,890
+you can see that you can nice and easily
+
+12
+00:00:26,020 --> 00:00:27,910
+put money in the shielded pool and
+
+13
+00:00:27,910 --> 00:00:31,890
+then you can send it from shielded to shielded
+
+14
+00:00:32,310 --> 00:00:34,250
+which is very nice.
+
+15
+00:00:34,250 --> 00:00:36,070
+You can also register a masternode.
+
+16
+00:00:36,070 --> 00:00:37,690
+You can very easily just click set
+
+17
+00:00:37,690 --> 00:00:42,350
+up a masternode and you can go through the process.
+
+18
+00:00:42,350 --> 00:00:44,690
+Once you have a masternode, you are
+
+19
+00:00:44,690 --> 00:00:46,810
+able to go into the governance tab
+
+20
+00:00:46,810 --> 00:00:48,830
+and you're able to vote right here
+
+21
+00:00:48,830 --> 00:00:51,810
+on proposals just like you can in Dash Core.
+
+22
+00:00:51,810 --> 00:00:54,700
+Shared masternodes just landed this morning.
+
+23
+00:00:54,700 --> 00:00:58,360
+So this has made a ton of progress.
+
+24
+00:00:58,560 --> 00:01:01,540
+It is near feature complete, but not quite there.
+
+25
+00:01:01,540 --> 00:01:05,280
+The current plan is for feature completeness
+
+26
+00:01:05,280 --> 00:01:08,160
+on this to come right around the end of November.
+
+27
+00:01:08,160 --> 00:01:10,440
+Hopefully with everything wrapping
+
+28
+00:01:10,440 --> 00:01:13,220
+up and having a final release or a
+
+29
+00:01:13,220 --> 00:01:16,840
+release in early December that is nice and usable.
+

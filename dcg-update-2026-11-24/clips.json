@@ -1,0 +1,800 @@
+{
+  "source": {
+    "title": "DCG Development Update - 2026 November 24",
+    "url": "https://www.youtube.com/watch?v=qK2W4Ws4kB8",
+    "channel": "@DashOrg",
+    "rendition": "YouTube 720p30 AV1 (format 398) video + AAC 128k (format 140) audio"
+  },
+  "clips": [
+    {
+      "id": "01-dash-forge-mainnet",
+      "filename": "01-dash-forge-mainnet.mp4",
+      "title": "Dash Forge: Git hosting on Dash Platform, now on mainnet",
+      "hook": "Dash Forge is live on mainnet: Git repos whose metadata lives on Dash Platform and code on IPFS or S3, with no server you have to trust.",
+      "duration_seconds": 85.03,
+      "size_bytes": 5085725,
+      "resolution": "1280x720",
+      "fps": "30/1",
+      "captions": "01-dash-forge-mainnet.srt",
+      "segments": [
+        {
+          "clip_start_seconds": 0.0,
+          "clip_end_seconds": 11.08,
+          "source_audio": [
+            "1:07:44.80",
+            "1:07:55.88"
+          ],
+          "source_audio_seconds": [
+            4064.8,
+            4075.88
+          ],
+          "crop": "slide"
+        },
+        {
+          "clip_start_seconds": 11.08,
+          "clip_end_seconds": 13.17,
+          "source_audio": [
+            "1:07:56.50",
+            "1:07:58.59"
+          ],
+          "source_audio_seconds": [
+            4076.5,
+            4078.59
+          ],
+          "crop": "slide"
+        },
+        {
+          "clip_start_seconds": 13.17,
+          "clip_end_seconds": 29.27,
+          "source_audio": [
+            "1:08:00.85",
+            "1:08:16.95"
+          ],
+          "source_audio_seconds": [
+            4080.85,
+            4096.95
+          ],
+          "crop": "slide"
+        },
+        {
+          "clip_start_seconds": 29.27,
+          "clip_end_seconds": 45.91,
+          "source_audio": [
+            "1:08:40.40",
+            "1:08:57.04"
+          ],
+          "source_audio_seconds": [
+            4120.4,
+            4137.04
+          ],
+          "crop": "slide"
+        },
+        {
+          "clip_start_seconds": 45.91,
+          "clip_end_seconds": 49.58,
+          "source_audio": [
+            "1:09:01.20",
+            "1:09:04.87"
+          ],
+          "source_audio_seconds": [
+            4141.2,
+            4144.87
+          ],
+          "crop": "slide"
+        },
+        {
+          "clip_start_seconds": 49.58,
+          "clip_end_seconds": 57.14,
+          "source_audio": [
+            "1:09:20.30",
+            "1:09:27.86"
+          ],
+          "source_audio_seconds": [
+            4160.3,
+            4167.86
+          ],
+          "crop": "slide"
+        },
+        {
+          "clip_start_seconds": 57.14,
+          "clip_end_seconds": 65.97,
+          "source_audio": [
+            "1:11:05.40",
+            "1:11:14.23"
+          ],
+          "source_audio_seconds": [
+            4265.4,
+            4274.23
+          ],
+          "crop": "browser"
+        },
+        {
+          "clip_start_seconds": 65.97,
+          "clip_end_seconds": 73.26,
+          "source_audio": [
+            "1:11:19.00",
+            "1:11:26.29"
+          ],
+          "source_audio_seconds": [
+            4279.0,
+            4286.29
+          ],
+          "crop": "repo zoom"
+        },
+        {
+          "clip_start_seconds": 73.26,
+          "clip_end_seconds": 84.99,
+          "source_audio": [
+            "1:11:40.70",
+            "1:11:52.43"
+          ],
+          "source_audio_seconds": [
+            4300.7,
+            4312.43
+          ],
+          "crop": "explorer zoom"
+        }
+      ],
+      "slack": [
+        {
+          "filename": "small/01-dash-forge-mainnet.part1of2.slack.mp4",
+          "duration_seconds": 45.91,
+          "size_bytes": 739928,
+          "resolution": "1280x720",
+          "video_kbps": 68,
+          "master_range_seconds": [
+            0.0,
+            45.91
+          ]
+        },
+        {
+          "filename": "small/01-dash-forge-mainnet.part2of2.slack.mp4",
+          "duration_seconds": 39.12,
+          "size_bytes": 714080,
+          "resolution": "1280x720",
+          "video_kbps": 87,
+          "master_range_seconds": [
+            45.91,
+            84.99
+          ]
+        }
+      ]
+    },
+    {
+      "id": "02-dashpay-desktop",
+      "filename": "02-dashpay-desktop.mp4",
+      "title": "DashPay Desktop: CoinJoin, shielded sends and masternodes in one app",
+      "hook": "First look at DashPay Desktop: CoinJoin, shielded-to-shielded sends, a masternode setup wizard, governance voting and shared masternodes, all in one wallet.",
+      "duration_seconds": 76.64,
+      "size_bytes": 5132890,
+      "resolution": "1280x720",
+      "fps": "30/1",
+      "captions": "02-dashpay-desktop.srt",
+      "segments": [
+        {
+          "clip_start_seconds": 0.0,
+          "clip_end_seconds": 7.15,
+          "source_audio": [
+            "0:56:54.50",
+            "0:57:01.65"
+          ],
+          "source_audio_seconds": [
+            3414.5,
+            3421.65
+          ],
+          "source_video_broll": [
+            "0:58:30.00",
+            "0:58:37.15"
+          ],
+          "source_video_broll_seconds": [
+            3510.0,
+            3517.15
+          ],
+          "crop": "app-window zoom"
+        },
+        {
+          "clip_start_seconds": 7.15,
+          "clip_end_seconds": 12.61,
+          "source_audio": [
+            "0:57:08.70",
+            "0:57:14.16"
+          ],
+          "source_audio_seconds": [
+            3428.7,
+            3434.16
+          ],
+          "source_video_broll": [
+            "0:58:37.30",
+            "0:58:42.76"
+          ],
+          "source_video_broll_seconds": [
+            3517.3,
+            3522.76
+          ],
+          "crop": "app-window zoom"
+        },
+        {
+          "clip_start_seconds": 12.61,
+          "clip_end_seconds": 18.33,
+          "source_audio": [
+            "0:59:03.30",
+            "0:59:09.02"
+          ],
+          "source_audio_seconds": [
+            3543.3,
+            3549.02
+          ],
+          "source_video_broll": [
+            "0:58:48.00",
+            "0:58:53.72"
+          ],
+          "source_video_broll_seconds": [
+            3528.0,
+            3533.72
+          ],
+          "crop": "app-window zoom"
+        },
+        {
+          "clip_start_seconds": 18.33,
+          "clip_end_seconds": 34.11,
+          "source_audio": [
+            "0:59:09.40",
+            "0:59:25.18"
+          ],
+          "source_audio_seconds": [
+            3549.4,
+            3565.18
+          ],
+          "crop": "app-window zoom"
+        },
+        {
+          "clip_start_seconds": 34.11,
+          "clip_end_seconds": 35.95,
+          "source_audio": [
+            "0:59:25.60",
+            "0:59:27.44"
+          ],
+          "source_audio_seconds": [
+            3565.6,
+            3567.44
+          ],
+          "crop": "app-window zoom"
+        },
+        {
+          "clip_start_seconds": 35.95,
+          "clip_end_seconds": 42.25,
+          "source_audio": [
+            "0:59:32.90",
+            "0:59:39.20"
+          ],
+          "source_audio_seconds": [
+            3572.9,
+            3579.2
+          ],
+          "crop": "app-window zoom"
+        },
+        {
+          "clip_start_seconds": 42.25,
+          "clip_end_seconds": 51.75,
+          "source_audio": [
+            "1:00:50.30",
+            "1:00:59.80"
+          ],
+          "source_audio_seconds": [
+            3650.3,
+            3659.8
+          ],
+          "crop": "app-window zoom"
+        },
+        {
+          "clip_start_seconds": 51.75,
+          "clip_end_seconds": 54.65,
+          "source_audio": [
+            "1:01:25.60",
+            "1:01:28.50"
+          ],
+          "source_audio_seconds": [
+            3685.6,
+            3688.5
+          ],
+          "source_video_broll": [
+            "1:01:02.00",
+            "1:01:04.90"
+          ],
+          "source_video_broll_seconds": [
+            3662.0,
+            3664.9
+          ],
+          "crop": "two-window demo"
+        },
+        {
+          "clip_start_seconds": 54.65,
+          "clip_end_seconds": 61.46,
+          "source_audio": [
+            "0:57:15.85",
+            "0:57:22.66"
+          ],
+          "source_audio_seconds": [
+            3435.85,
+            3442.66
+          ],
+          "source_video_broll": [
+            "1:01:04.80",
+            "1:01:11.61"
+          ],
+          "source_video_broll_seconds": [
+            3664.8,
+            3671.61
+          ],
+          "crop": "two-window demo"
+        },
+        {
+          "clip_start_seconds": 61.46,
+          "clip_end_seconds": 68.1,
+          "source_audio": [
+            "0:57:23.20",
+            "0:57:29.84"
+          ],
+          "source_audio_seconds": [
+            3443.2,
+            3449.84
+          ],
+          "crop": "slide"
+        },
+        {
+          "clip_start_seconds": 68.1,
+          "clip_end_seconds": 76.56,
+          "source_audio": [
+            "0:57:30.20",
+            "0:57:38.66"
+          ],
+          "source_audio_seconds": [
+            3450.2,
+            3458.66
+          ],
+          "crop": "slide"
+        }
+      ],
+      "slack": [
+        {
+          "filename": "small/02-dashpay-desktop.part1of2.slack.mp4",
+          "duration_seconds": 36.03,
+          "size_bytes": 737351,
+          "resolution": "1280x720",
+          "video_kbps": 109,
+          "master_range_seconds": [
+            0.0,
+            35.95
+          ]
+        },
+        {
+          "filename": "small/02-dashpay-desktop.part2of2.slack.mp4",
+          "duration_seconds": 40.7,
+          "size_bytes": 719121,
+          "resolution": "1280x720",
+          "video_kbps": 91,
+          "master_range_seconds": [
+            35.95,
+            76.56
+          ]
+        }
+      ]
+    },
+    {
+      "id": "03-rdashd-testnet-masternode",
+      "filename": "03-rdashd-testnet-masternode.mp4",
+      "title": "rdashd: a Rust-built Dash node is running a testnet masternode",
+      "hook": "rdashd, a from-scratch Rust implementation of Dash, has already found real Dash Core bugs and now runs a testnet masternode that joins DKG and signs ChainLocks.",
+      "duration_seconds": 67.84,
+      "size_bytes": 3044165,
+      "resolution": "1280x720",
+      "fps": "30/1",
+      "captions": "03-rdashd-testnet-masternode.srt",
+      "segments": [
+        {
+          "clip_start_seconds": 0.0,
+          "clip_end_seconds": 12.81,
+          "source_audio": [
+            "1:03:06.35",
+            "1:03:19.16"
+          ],
+          "source_audio_seconds": [
+            3786.35,
+            3799.16
+          ],
+          "crop": "slide"
+        },
+        {
+          "clip_start_seconds": 12.81,
+          "clip_end_seconds": 39.83,
+          "source_audio": [
+            "1:03:25.20",
+            "1:03:52.22"
+          ],
+          "source_audio_seconds": [
+            3805.2,
+            3832.22
+          ],
+          "crop": "slide"
+        },
+        {
+          "clip_start_seconds": 39.83,
+          "clip_end_seconds": 42.31,
+          "source_audio": [
+            "1:05:01.20",
+            "1:05:03.68"
+          ],
+          "source_audio_seconds": [
+            3901.2,
+            3903.68
+          ],
+          "crop": "slide"
+        },
+        {
+          "clip_start_seconds": 42.31,
+          "clip_end_seconds": 49.09,
+          "source_audio": [
+            "1:05:07.70",
+            "1:05:14.48"
+          ],
+          "source_audio_seconds": [
+            3907.7,
+            3914.48
+          ],
+          "crop": "slide"
+        },
+        {
+          "clip_start_seconds": 49.09,
+          "clip_end_seconds": 59.33,
+          "source_audio": [
+            "1:05:15.00",
+            "1:05:25.24"
+          ],
+          "source_audio_seconds": [
+            3915.0,
+            3925.24
+          ],
+          "crop": "slide"
+        },
+        {
+          "clip_start_seconds": 59.33,
+          "clip_end_seconds": 61.11,
+          "source_audio": [
+            "1:05:26.00",
+            "1:05:27.78"
+          ],
+          "source_audio_seconds": [
+            3926.0,
+            3927.78
+          ],
+          "source_video_broll": [
+            "1:06:32.00",
+            "1:06:33.78"
+          ],
+          "source_video_broll_seconds": [
+            3992.0,
+            3993.78
+          ],
+          "crop": "slide"
+        },
+        {
+          "clip_start_seconds": 61.11,
+          "clip_end_seconds": 67.73,
+          "source_audio": [
+            "1:05:49.80",
+            "1:05:56.42"
+          ],
+          "source_audio_seconds": [
+            3949.8,
+            3956.42
+          ],
+          "source_video_broll": [
+            "1:06:33.60",
+            "1:06:40.22"
+          ],
+          "source_video_broll_seconds": [
+            3993.6,
+            4000.22
+          ],
+          "crop": "slide"
+        }
+      ],
+      "slack": [
+        {
+          "filename": "small/03-rdashd-testnet-masternode.part1of2.slack.mp4",
+          "duration_seconds": 39.92,
+          "size_bytes": 714420,
+          "resolution": "1280x720",
+          "video_kbps": 75,
+          "master_range_seconds": [
+            0.0,
+            39.83
+          ]
+        },
+        {
+          "filename": "small/03-rdashd-testnet-masternode.part2of2.slack.mp4",
+          "duration_seconds": 27.91,
+          "size_bytes": 725476,
+          "resolution": "1280x720",
+          "video_kbps": 153,
+          "master_range_seconds": [
+            39.83,
+            67.73
+          ]
+        }
+      ]
+    },
+    {
+      "id": "04-dash-core-fortnight",
+      "filename": "04-dash-core-fortnight.mp4",
+      "title": "Dash Core: 130 PRs, a DKG bug from 2018 fixed, faster BLS",
+      "hook": "Two weeks of Dash Core: 130 PRs merged, a DKG slowdown hiding since 2018 fixed, and a BLS library switch that should lighten the load on masternodes.",
+      "duration_seconds": 65.04,
+      "size_bytes": 2585994,
+      "resolution": "1280x720",
+      "fps": "30/1",
+      "captions": "04-dash-core-fortnight.srt",
+      "segments": [
+        {
+          "clip_start_seconds": 0.0,
+          "clip_end_seconds": 4.26,
+          "source_audio": [
+            "0:48:30.90",
+            "0:48:35.16"
+          ],
+          "source_audio_seconds": [
+            2910.9,
+            2915.16
+          ],
+          "crop": "slide"
+        },
+        {
+          "clip_start_seconds": 4.26,
+          "clip_end_seconds": 26.28,
+          "source_audio": [
+            "0:50:55.80",
+            "0:51:17.82"
+          ],
+          "source_audio_seconds": [
+            3055.8,
+            3077.82
+          ],
+          "crop": "slide"
+        },
+        {
+          "clip_start_seconds": 26.28,
+          "clip_end_seconds": 35.09,
+          "source_audio": [
+            "0:51:19.00",
+            "0:51:27.81"
+          ],
+          "source_audio_seconds": [
+            3079.0,
+            3087.81
+          ],
+          "crop": "slide"
+        },
+        {
+          "clip_start_seconds": 35.09,
+          "clip_end_seconds": 46.25,
+          "source_audio": [
+            "0:51:33.70",
+            "0:51:44.86"
+          ],
+          "source_audio_seconds": [
+            3093.7,
+            3104.86
+          ],
+          "crop": "slide"
+        },
+        {
+          "clip_start_seconds": 46.25,
+          "clip_end_seconds": 55.57,
+          "source_audio": [
+            "0:54:06.90",
+            "0:54:16.22"
+          ],
+          "source_audio_seconds": [
+            3246.9,
+            3256.22
+          ],
+          "crop": "slide"
+        },
+        {
+          "clip_start_seconds": 55.57,
+          "clip_end_seconds": 64.93,
+          "source_audio": [
+            "0:54:19.15",
+            "0:54:28.51"
+          ],
+          "source_audio_seconds": [
+            3259.15,
+            3268.51
+          ],
+          "crop": "slide"
+        }
+      ],
+      "slack": [
+        {
+          "filename": "small/04-dash-core-fortnight.part1of2.slack.mp4",
+          "duration_seconds": 35.12,
+          "size_bytes": 704600,
+          "resolution": "1280x720",
+          "video_kbps": 101,
+          "master_range_seconds": [
+            0.0,
+            35.09
+          ]
+        },
+        {
+          "filename": "small/04-dash-core-fortnight.part2of2.slack.mp4",
+          "duration_seconds": 29.92,
+          "size_bytes": 711892,
+          "resolution": "1280x720",
+          "video_kbps": 126,
+          "master_range_seconds": [
+            35.09,
+            64.93
+          ]
+        }
+      ]
+    },
+    {
+      "id": "05-platform-5-1",
+      "filename": "05-platform-5-1.mp4",
+      "title": "Dash Platform 5.1: what ships, and when",
+      "hook": "Dash Platform 5.1 releases this week: private DashPay, multiple-choice masternode decisions, and Tenderdash 2.0 confirming in seconds, with smart contracts on track for April.",
+      "duration_seconds": 76.57,
+      "size_bytes": 4578245,
+      "resolution": "1280x720",
+      "fps": "30/1",
+      "captions": "05-platform-5-1.srt",
+      "segments": [
+        {
+          "clip_start_seconds": 0.0,
+          "clip_end_seconds": 9.95,
+          "source_audio": [
+            "0:23:50.20",
+            "0:24:00.15"
+          ],
+          "source_audio_seconds": [
+            1430.2,
+            1440.15
+          ],
+          "source_video_broll": [
+            "0:23:56.50",
+            "0:24:06.45"
+          ],
+          "source_video_broll_seconds": [
+            1436.5,
+            1446.45
+          ]
+        },
+        {
+          "clip_start_seconds": 9.95,
+          "clip_end_seconds": 18.89,
+          "source_audio": [
+            "0:11:59.50",
+            "0:12:08.44"
+          ],
+          "source_audio_seconds": [
+            719.5,
+            728.44
+          ],
+          "source_video_broll": [
+            "0:18:06.00",
+            "0:18:14.94"
+          ],
+          "source_video_broll_seconds": [
+            1086.0,
+            1094.94
+          ]
+        },
+        {
+          "clip_start_seconds": 18.89,
+          "clip_end_seconds": 31.64,
+          "source_audio": [
+            "0:15:51.70",
+            "0:16:04.45"
+          ],
+          "source_audio_seconds": [
+            951.7,
+            964.45
+          ],
+          "source_video_broll": [
+            "0:18:54.00",
+            "0:19:06.75"
+          ],
+          "source_video_broll_seconds": [
+            1134.0,
+            1146.75
+          ]
+        },
+        {
+          "clip_start_seconds": 31.64,
+          "clip_end_seconds": 36.79,
+          "source_audio": [
+            "0:21:36.65",
+            "0:21:41.80"
+          ],
+          "source_audio_seconds": [
+            1296.65,
+            1301.8
+          ]
+        },
+        {
+          "clip_start_seconds": 36.79,
+          "clip_end_seconds": 46.33,
+          "source_audio": [
+            "0:21:44.00",
+            "0:21:53.54"
+          ],
+          "source_audio_seconds": [
+            1304.0,
+            1313.54
+          ]
+        },
+        {
+          "clip_start_seconds": 46.33,
+          "clip_end_seconds": 62.89,
+          "source_audio": [
+            "0:22:00.10",
+            "0:22:16.66"
+          ],
+          "source_audio_seconds": [
+            1320.1,
+            1336.66
+          ]
+        },
+        {
+          "clip_start_seconds": 62.89,
+          "clip_end_seconds": 72.64,
+          "source_audio": [
+            "0:17:46.40",
+            "0:17:56.15"
+          ],
+          "source_audio_seconds": [
+            1066.4,
+            1076.15
+          ]
+        },
+        {
+          "clip_start_seconds": 72.64,
+          "clip_end_seconds": 76.48,
+          "source_audio": [
+            "0:27:40.10",
+            "0:27:43.94"
+          ],
+          "source_audio_seconds": [
+            1660.1,
+            1663.94
+          ]
+        }
+      ],
+      "slack": [
+        {
+          "filename": "small/05-platform-5-1.part1of2.slack.mp4",
+          "duration_seconds": 36.83,
+          "size_bytes": 710288,
+          "resolution": "1280x720",
+          "video_kbps": 95,
+          "master_range_seconds": [
+            0.0,
+            36.79
+          ]
+        },
+        {
+          "filename": "small/05-platform-5-1.part2of2.slack.mp4",
+          "duration_seconds": 39.74,
+          "size_bytes": 705445,
+          "resolution": "1280x720",
+          "video_kbps": 85,
+          "master_range_seconds": [
+            36.79,
+            76.48
+          ]
+        }
+      ]
+    }
+  ]
+}

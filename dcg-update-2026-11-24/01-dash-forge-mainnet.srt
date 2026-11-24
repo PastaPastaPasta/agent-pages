@@ -1,0 +1,124 @@
+1
+00:00:00,080 --> 00:00:02,260
+One more thing.
+
+2
+00:00:02,360 --> 00:00:05,700
+Dash Forge has been published to mainnet.
+
+3
+00:00:05,700 --> 00:00:09,760
+This is not a DCG product but Dash Forge
+
+4
+00:00:09,760 --> 00:00:11,140
+is now deployed.
+
+5
+00:00:11,140 --> 00:00:13,580
+You can go to forge.dashhq.org and
+
+6
+00:00:13,580 --> 00:00:19,220
+you can deploy and push your own repo
+
+7
+00:00:19,300 --> 00:00:22,960
+directly on Dash Platform or using
+
+8
+00:00:22,960 --> 00:00:26,660
+S3 buckets or IPFS if you don't want
+
+9
+00:00:26,660 --> 00:00:29,370
+to pay the storage on Dash Platform.
+
+10
+00:00:29,370 --> 00:00:31,410
+The way that it works is you download
+
+11
+00:00:31,410 --> 00:00:33,410
+an extension to Git, you install that
+
+12
+00:00:33,410 --> 00:00:35,650
+extension and then that allows you
+
+13
+00:00:35,650 --> 00:00:38,050
+to clone and push these repos just
+
+14
+00:00:38,050 --> 00:00:39,710
+like you would normally.
+
+15
+00:00:40,170 --> 00:00:42,150
+You can move stuff over from GitHub,
+
+16
+00:00:42,150 --> 00:00:46,010
+you can import issues and PRs, et cetera, from GitHub.
+
+17
+00:00:46,010 --> 00:00:47,430
+The really cool thing about this is
+
+18
+00:00:47,430 --> 00:00:49,720
+there isn't anything that you have to trust.
+
+19
+00:00:49,720 --> 00:00:51,320
+If you use the extension, everything
+
+20
+00:00:51,320 --> 00:00:54,420
+pulls directly from Dash Platform and
+
+21
+00:00:54,420 --> 00:00:57,250
+then IPFS or S3 or however you configure it.
+
+22
+00:00:57,250 --> 00:01:01,630
+So this is a Dash Forge and so far
+
+23
+00:01:01,630 --> 00:01:04,350
+there is one Git repo on there and
+
+24
+00:01:04,350 --> 00:01:06,120
+that is Dash Forge itself.
+
+25
+00:01:06,120 --> 00:01:09,560
+The code here is hosted on IPFS and
+
+26
+00:01:09,560 --> 00:01:12,160
+all of the metadata is of course stored
+
+27
+00:01:12,160 --> 00:01:13,390
+on Dash Platform.
+
+28
+00:01:13,390 --> 00:01:16,730
+So this is a repo under a data contract
+
+29
+00:01:16,730 --> 00:01:20,230
+and you can see all of the information about it.
+
+30
+00:01:20,230 --> 00:01:22,110
+We can look into this contract and
+
+31
+00:01:22,110 --> 00:01:25,270
+you can see everything that has happened so far.
+

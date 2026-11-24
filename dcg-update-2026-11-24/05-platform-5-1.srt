@@ -1,0 +1,120 @@
+1
+00:00:00,000 --> 00:00:01,710
+So what's the timeline?
+
+2
+00:00:01,710 --> 00:00:04,750
+So we're expecting to release in two days.
+
+3
+00:00:04,750 --> 00:00:10,050
+The most likely activation is December 15th.
+
+4
+00:00:10,050 --> 00:00:13,070
+Private DashPay end to end with private
+
+5
+00:00:13,070 --> 00:00:15,050
+contact requests, with private payment
+
+6
+00:00:15,050 --> 00:00:18,950
+addresses, shielded tips in the wallet.
+
+7
+00:00:18,950 --> 00:00:21,030
+We have masternode decisions.
+
+8
+00:00:21,030 --> 00:00:24,090
+So yes, no polls, decision proposals.
+
+9
+00:00:24,230 --> 00:00:27,070
+So you can make questions with multiple
+
+10
+00:00:27,070 --> 00:00:29,910
+answers like should we do A, B, C or
+
+11
+00:00:29,910 --> 00:00:31,670
+D and you can ask the network.
+
+12
+00:00:31,670 --> 00:00:33,610
+Tenderdash 2.0 is actually really cool
+
+13
+00:00:33,610 --> 00:00:36,850
+in one thing that it does.
+
+14
+00:00:36,850 --> 00:00:40,090
+The blocks being checked earlier makes
+
+15
+00:00:40,090 --> 00:00:41,750
+it so the chain is always moving.
+
+16
+00:00:41,750 --> 00:00:45,110
+So you don't get any timeouts or you
+
+17
+00:00:45,110 --> 00:00:46,410
+shouldn't anymore at least.
+
+18
+00:00:46,410 --> 00:00:48,230
+Sometimes you could send a state transition
+
+19
+00:00:48,230 --> 00:00:50,150
+and it would take like a minute to,
+
+20
+00:00:50,150 --> 00:00:52,130
+if you're very, very unlucky, it could
+
+21
+00:00:52,130 --> 00:00:53,950
+take a minute to come back, right?
+
+22
+00:00:53,950 --> 00:00:55,070
+With the response.
+
+23
+00:00:55,070 --> 00:00:57,530
+Now it should, this should no longer happen.
+
+24
+00:00:57,630 --> 00:01:01,430
+It should always go within 10 seconds
+
+25
+00:01:01,430 --> 00:01:02,990
+and generally within three.
+
+26
+00:01:02,990 --> 00:01:07,330
+But you can tell that development release
+
+27
+00:01:07,330 --> 00:01:09,910
+speed is actually kind of on an exponential
+
+28
+00:01:09,910 --> 00:01:12,720
+curve with the help of AI tools.
+
+29
+00:01:12,720 --> 00:01:14,960
+So I do think we're on track to having
+
+30
+00:01:14,960 --> 00:01:16,760
+smart contracts by April.
+

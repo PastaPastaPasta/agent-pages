@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DCG Update Clips</title>
+<meta name="description" content="Highlight clips from the DCG Development Update, November 24, 2026.">
+<style>
+  :root { --paper: #f7fafc; --ink: #1b2733; --muted: #5c6b7a; --accent: #006bb0; --line: #dbe4ec; --card: #fff; --tag: #edf3f7; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --paper: #101820; --ink: #dde6ee; --muted: #93a3b2; --accent: #6fbdf2; --line: #2a3844; --card: #17212b; --tag: #1d2a35; }
+  }
+  :root[data-theme="dark"] { --paper: #101820; --ink: #dde6ee; --muted: #93a3b2; --accent: #6fbdf2; --line: #2a3844; --card: #17212b; --tag: #1d2a35; }
+  * { box-sizing: border-box; }
+  html { background: var(--paper); }
+  body { background: var(--paper); color: var(--ink); font: 16px/1.55 -apple-system, "Segoe UI", Roboto, sans-serif; max-width: 860px; margin: 0 auto; padding: 3rem 1rem; }
+  h1 { font-size: 1.5rem; letter-spacing: -0.01em; margin: 0 0 .3rem; }
+  .intro { color: var(--muted); margin: 0 0 2rem; }
+  a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  a:hover, a:focus-visible { text-decoration: underline; }
+  article { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 1rem; margin: 0 0 1.5rem; }
+  h2 { font-size: 1.15rem; margin: 0 0 .75rem; }
+  video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 6px; }
+  .hook { margin: .8rem 0 .3rem; }
+  .meta, .muted { color: var(--muted); font-size: .85rem; }
+  .meta { margin: 0 0 .5rem; font-variant-numeric: tabular-nums; }
+  .dl { margin: 0 0 .6rem; font-size: .9rem; }
+  .dl a { font-weight: 500; }
+  details { font-size: .85rem; }
+  summary { cursor: pointer; color: var(--muted); }
+  .segs { list-style: none; padding: 0; margin: .5rem 0 0; display: grid; gap: .25rem; }
+  .segs a { font-weight: 500; }
+  .t { display: inline-block; min-width: 3em; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .tag { background: var(--tag); border-radius: 4px; padding: 0 .35rem; color: var(--muted); }
+</style>
+<h1>DCG Development Update — highlight clips</h1>
+<p class="intro">Five short clips cut from the <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8">November 24, 2026 livestream</a>. Each clip stitches the explanation together with its demo or slides, trimmed and captioned. Source timestamps link back to the full stream. Metadata: <a href="clips.json">clips.json</a>.</p>
+<article id="01-dash-forge-mainnet">
+  <h2>Dash Forge: Git hosting on Dash Platform, now on mainnet</h2>
+  <video controls preload="none" playsinline poster="01-dash-forge-mainnet.jpg" src="01-dash-forge-mainnet.mp4"></video>
+  <p class="hook">Dash Forge is live on mainnet: Git repos whose metadata lives on Dash Platform and code on IPFS or S3, with no server you have to trust.</p>
+  <p class="meta">1:25 · 1280x720 · captions burned in</p>
+  <p class="dl"><a href="01-dash-forge-mainnet.mp4" download>Download MP4 (5.1 MB)</a> · <a href="01-dash-forge-mainnet.srt" download>Captions (.srt)</a><br><span class="muted">Slack-sized (&lt;750 KB):</span> <a href="small/01-dash-forge-mainnet.part1of2.slack.mp4" download>part 1 (0:46, 740 KB)</a> · <a href="small/01-dash-forge-mainnet.part2of2.slack.mp4" download>part 2 (0:39, 714 KB)</a></p>
+  <details><summary>Source segments (9)</summary><ul class="segs"><li><span class="t">0:00</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=4064s">1:07:44.80–1:07:55.88</a></li><li><span class="t">0:11</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=4076s">1:07:56.50–1:07:58.59</a></li><li><span class="t">0:13</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=4080s">1:08:00.85–1:08:16.95</a></li><li><span class="t">0:29</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=4120s">1:08:40.40–1:08:57.04</a></li><li><span class="t">0:46</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=4141s">1:09:01.20–1:09:04.87</a></li><li><span class="t">0:50</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=4160s">1:09:20.30–1:09:27.86</a></li><li><span class="t">0:57</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=4265s">1:11:05.40–1:11:14.23</a></li><li><span class="t">1:06</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=4279s">1:11:19.00–1:11:26.29</a></li><li><span class="t">1:13</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=4300s">1:11:40.70–1:11:52.43</a></li></ul></details>
+</article><article id="02-dashpay-desktop">
+  <h2>DashPay Desktop: CoinJoin, shielded sends and masternodes in one app</h2>
+  <video controls preload="none" playsinline poster="02-dashpay-desktop.jpg" src="02-dashpay-desktop.mp4"></video>
+  <p class="hook">First look at DashPay Desktop: CoinJoin, shielded-to-shielded sends, a masternode setup wizard, governance voting and shared masternodes, all in one wallet.</p>
+  <p class="meta">1:17 · 1280x720 · captions burned in</p>
+  <p class="dl"><a href="02-dashpay-desktop.mp4" download>Download MP4 (5.1 MB)</a> · <a href="02-dashpay-desktop.srt" download>Captions (.srt)</a><br><span class="muted">Slack-sized (&lt;750 KB):</span> <a href="small/02-dashpay-desktop.part1of2.slack.mp4" download>part 1 (0:36, 737 KB)</a> · <a href="small/02-dashpay-desktop.part2of2.slack.mp4" download>part 2 (0:41, 719 KB)</a></p>
+  <details><summary>Source segments (11)</summary><ul class="segs"><li><span class="t">0:00</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3414s">56:54.50–57:01.65</a> <span class="tag">over footage from <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3510s">58:30.00</a></span></li><li><span class="t">0:07</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3428s">57:08.70–57:14.16</a> <span class="tag">over footage from <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3517s">58:37.30</a></span></li><li><span class="t">0:13</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3543s">59:03.30–59:09.02</a> <span class="tag">over footage from <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3528s">58:48.00</a></span></li><li><span class="t">0:18</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3549s">59:09.40–59:25.18</a></li><li><span class="t">0:34</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3565s">59:25.60–59:27.44</a></li><li><span class="t">0:36</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3572s">59:32.90–59:39.20</a></li><li><span class="t">0:42</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3650s">1:00:50.30–1:00:59.80</a></li><li><span class="t">0:52</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3685s">1:01:25.60–1:01:28.50</a> <span class="tag">over footage from <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3662s">1:01:02.00</a></span></li><li><span class="t">0:55</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3435s">57:15.85–57:22.66</a> <span class="tag">over footage from <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3664s">1:01:04.80</a></span></li><li><span class="t">1:01</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3443s">57:23.20–57:29.84</a></li><li><span class="t">1:08</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3450s">57:30.20–57:38.66</a></li></ul></details>
+</article><article id="03-rdashd-testnet-masternode">
+  <h2>rdashd: a Rust-built Dash node is running a testnet masternode</h2>
+  <video controls preload="none" playsinline poster="03-rdashd-testnet-masternode.jpg" src="03-rdashd-testnet-masternode.mp4"></video>
+  <p class="hook">rdashd, a from-scratch Rust implementation of Dash, has already found real Dash Core bugs and now runs a testnet masternode that joins DKG and signs ChainLocks.</p>
+  <p class="meta">1:08 · 1280x720 · captions burned in</p>
+  <p class="dl"><a href="03-rdashd-testnet-masternode.mp4" download>Download MP4 (3.0 MB)</a> · <a href="03-rdashd-testnet-masternode.srt" download>Captions (.srt)</a><br><span class="muted">Slack-sized (&lt;750 KB):</span> <a href="small/03-rdashd-testnet-masternode.part1of2.slack.mp4" download>part 1 (0:40, 714 KB)</a> · <a href="small/03-rdashd-testnet-masternode.part2of2.slack.mp4" download>part 2 (0:28, 725 KB)</a></p>
+  <details><summary>Source segments (7)</summary><ul class="segs"><li><span class="t">0:00</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3786s">1:03:06.35–1:03:19.16</a></li><li><span class="t">0:13</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3805s">1:03:25.20–1:03:52.22</a></li><li><span class="t">0:40</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3901s">1:05:01.20–1:05:03.68</a></li><li><span class="t">0:42</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3907s">1:05:07.70–1:05:14.48</a></li><li><span class="t">0:49</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3915s">1:05:15.00–1:05:25.24</a></li><li><span class="t">0:59</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3926s">1:05:26.00–1:05:27.78</a> <span class="tag">over footage from <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3992s">1:06:32.00</a></span></li><li><span class="t">1:01</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3949s">1:05:49.80–1:05:56.42</a> <span class="tag">over footage from <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3993s">1:06:33.60</a></span></li></ul></details>
+</article><article id="04-dash-core-fortnight">
+  <h2>Dash Core: 130 PRs, a DKG bug from 2018 fixed, faster BLS</h2>
+  <video controls preload="none" playsinline poster="04-dash-core-fortnight.jpg" src="04-dash-core-fortnight.mp4"></video>
+  <p class="hook">Two weeks of Dash Core: 130 PRs merged, a DKG slowdown hiding since 2018 fixed, and a BLS library switch that should lighten the load on masternodes.</p>
+  <p class="meta">1:05 · 1280x720 · captions burned in</p>
+  <p class="dl"><a href="04-dash-core-fortnight.mp4" download>Download MP4 (2.6 MB)</a> · <a href="04-dash-core-fortnight.srt" download>Captions (.srt)</a><br><span class="muted">Slack-sized (&lt;750 KB):</span> <a href="small/04-dash-core-fortnight.part1of2.slack.mp4" download>part 1 (0:35, 705 KB)</a> · <a href="small/04-dash-core-fortnight.part2of2.slack.mp4" download>part 2 (0:30, 712 KB)</a></p>
+  <details><summary>Source segments (6)</summary><ul class="segs"><li><span class="t">0:00</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=2910s">48:30.90–48:35.16</a></li><li><span class="t">0:04</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3055s">50:55.80–51:17.82</a></li><li><span class="t">0:26</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3079s">51:19.00–51:27.81</a></li><li><span class="t">0:35</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3093s">51:33.70–51:44.86</a></li><li><span class="t">0:46</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3246s">54:06.90–54:16.22</a></li><li><span class="t">0:56</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=3259s">54:19.15–54:28.51</a></li></ul></details>
+</article><article id="05-platform-5-1">
+  <h2>Dash Platform 5.1: what ships, and when</h2>
+  <video controls preload="none" playsinline poster="05-platform-5-1.jpg" src="05-platform-5-1.mp4"></video>
+  <p class="hook">Dash Platform 5.1 releases this week: private DashPay, multiple-choice masternode decisions, and Tenderdash 2.0 confirming in seconds, with smart contracts on track for April.</p>
+  <p class="meta">1:17 · 1280x720 · captions burned in</p>
+  <p class="dl"><a href="05-platform-5-1.mp4" download>Download MP4 (4.6 MB)</a> · <a href="05-platform-5-1.srt" download>Captions (.srt)</a><br><span class="muted">Slack-sized (&lt;750 KB):</span> <a href="small/05-platform-5-1.part1of2.slack.mp4" download>part 1 (0:37, 710 KB)</a> · <a href="small/05-platform-5-1.part2of2.slack.mp4" download>part 2 (0:40, 705 KB)</a></p>
+  <details><summary>Source segments (8)</summary><ul class="segs"><li><span class="t">0:00</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=1430s">23:50.20–24:00.15</a> <span class="tag">over footage from <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=1436s">23:56.50</a></span></li><li><span class="t">0:10</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=719s">11:59.50–12:08.44</a> <span class="tag">over footage from <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=1086s">18:06.00</a></span></li><li><span class="t">0:19</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=951s">15:51.70–16:04.45</a> <span class="tag">over footage from <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=1134s">18:54.00</a></span></li><li><span class="t">0:32</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=1296s">21:36.65–21:41.80</a></li><li><span class="t">0:37</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=1304s">21:44.00–21:53.54</a></li><li><span class="t">0:46</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=1320s">22:00.10–22:16.66</a></li><li><span class="t">1:03</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=1066s">17:46.40–17:56.15</a></li><li><span class="t">1:13</span> <a href="https://www.youtube.com/watch?v=qK2W4Ws4kB8&amp;t=1660s">27:40.10–27:43.94</a></li></ul></details>
+</article>
+</html>

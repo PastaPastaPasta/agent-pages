@@ -1,0 +1,96 @@
+1
+00:00:00,050 --> 00:00:03,040
+So this is a Rust based implementation
+
+2
+00:00:03,040 --> 00:00:05,970
+based on rust-dashcore that is a full
+
+3
+00:00:05,970 --> 00:00:11,050
+node, full masternode compatible implementation
+
+4
+00:00:11,050 --> 00:00:12,910
+of the Dash Core protocol.
+
+5
+00:00:12,910 --> 00:00:15,090
+There have been a number of bugs both
+
+6
+00:00:15,090 --> 00:00:17,910
+in rust-dashcore as well as in Dash Core
+
+7
+00:00:17,910 --> 00:00:21,830
+itself that we've identified from this process.
+
+8
+00:00:22,230 --> 00:00:23,790
+There were a couple of bugs actually
+
+9
+00:00:23,790 --> 00:00:27,970
+that were fixed in 23.1 patch versions
+
+10
+00:00:27,970 --> 00:00:32,910
+that had some severity attached to them.
+
+11
+00:00:33,290 --> 00:00:35,830
+And we only found them thanks to this
+
+12
+00:00:35,830 --> 00:00:38,350
+work of completely re-implementing
+
+13
+00:00:38,350 --> 00:00:39,910
+the entire protocol in Rust.
+
+14
+00:00:39,910 --> 00:00:43,410
+And actually just on the 22nd, we had
+
+15
+00:00:43,410 --> 00:00:46,610
+the first rdashd testnet masternode
+
+16
+00:00:46,610 --> 00:00:49,230
+registered and it is still registered.
+
+17
+00:00:49,230 --> 00:00:51,310
+So this masternode has been on the
+
+18
+00:00:51,310 --> 00:00:54,090
+network now, it's been on testnet and
+
+19
+00:00:54,090 --> 00:00:56,810
+it is partaking in DKG, it is not getting
+
+20
+00:00:56,810 --> 00:00:59,410
+proof of service banned, it is signing ChainLocks.
+
+21
+00:00:59,410 --> 00:01:01,170
+There's still some more to do here.
+
+22
+00:01:01,170 --> 00:01:03,010
+However, this is a super cool milestone
+
+23
+00:01:03,010 --> 00:01:05,670
+to get a Rust-based testnet masternode
+
+24
+00:01:05,670 --> 00:01:08,010
+deployed and have it functional.
+
